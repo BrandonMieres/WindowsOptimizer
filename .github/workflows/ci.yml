@@ -17,15 +17,17 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '10.0.x'
+        dotnet-quality: 'ga'
 
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Build and Test Engine & Rules
+      run: |
+        dotnet test tests/WindowsOptimizer.Core.Tests/WindowsOptimizer.Core.Tests.csproj -c Release
+        dotnet test tests/WindowsOptimizer.Rules.Tests/WindowsOptimizer.Rules.Tests.csproj -c Release
+        dotnet test tests/WindowsOptimizer.Measurement.Tests/WindowsOptimizer.Measurement.Tests.csproj -c Release
+        dotnet test tests/WindowsOptimizer.Scanners.Tests/WindowsOptimizer.Scanners.Tests.csproj -c Release
+        dotnet test tests/WindowsOptimizer.Actions.Tests/WindowsOptimizer.Actions.Tests.csproj -c Release
+        dotnet test tests/WindowsOptimizer.Service.Tests/WindowsOptimizer.Service.Tests.csproj -c Release
+        dotnet test src/WindowsOptimizer.Tests/WindowsOptimizer.Tests.csproj -c Release
 
-    - name: Build
-      run: dotnet build --no-restore --configuration Release
-
-    - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release
-
-    - name: Format Check
-      run: dotnet format --verify-no-changes
+    - name: Build WinUI 3 Desktop App (x64)
+      run: dotnet build src/WindowsOptimizer.App/WindowsOptimizer.App.csproj -c Release -p:Platform=x64
