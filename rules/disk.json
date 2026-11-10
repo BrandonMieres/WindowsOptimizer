@@ -1,0 +1,82 @@
+[
+  {
+    "id": "disk.ntfs_disable_last_access",
+    "category": "disk",
+    "name": "Desactivar Last Access Update",
+    "description": "Evita que NTFS actualice la fecha de 'último acceso' cada vez que se lee un archivo.",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "detect": {
+      "registry": {
+        "path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+        "name": "NtfsDisableLastAccessUpdate",
+        "expected_value": 1,
+        "bad_value": 0
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+        "name": "NtfsDisableLastAccessUpdate",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": true,
+    "explain": {
+      "what": "Una función heredada de NTFS que actualiza el timestamp de un archivo solo por abrirlo.",
+      "why": "Al desactivarlo, se reducen las escrituras al disco (especialmente útil en SSDs) y se mejora ligeramente el rendimiento IO.",
+      "changes": "Establece NtfsDisableLastAccessUpdate a 1."
+    },
+    "impact": {
+      "type": "performance",
+      "confidence": "medium",
+      "show_percentage": false
+    },
+    "sources": []
+  },
+  {
+    "id": "disk.disable_8dot3_names",
+    "category": "disk",
+    "name": "Desactivar creación de nombres 8.3",
+    "description": "Evita que NTFS genere nombres cortos compatibles con MS-DOS para cada archivo.",
+    "risk": "medium",
+    "presets": ["minimal", "standard", "advanced"],
+    "detect": {
+      "registry": {
+        "path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+        "name": "NtfsDisable8dot3NameCreation",
+        "expected_value": 1,
+        "bad_value": 0
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+        "name": "NtfsDisable8dot3NameCreation",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": true,
+    "explain": {
+      "what": "Una función obsoleta que crea un nombre corto (tipo ARCHIV~1.TXT) para cada archivo nuevo.",
+      "why": "Al desactivarlo se acelera la enumeración de directorios y se ahorra sobrecarga en la MFT.",
+      "changes": "Establece NtfsDisable8dot3NameCreation a 1."
+    },
+    "impact": {
+      "type": "performance",
+      "confidence": "medium",
+      "show_percentage": false
+    },
+    "sources": []
+  }
+]
+
+

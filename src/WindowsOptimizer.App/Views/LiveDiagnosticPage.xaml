@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="WindowsOptimizer_App.Views.LiveDiagnosticPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:WindowsOptimizer.Core.Models"
+    xmlns:converters="using:WindowsOptimizer_App.Converters"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+        <converters:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
+    </Page.Resources>
+
+
+    <ScrollViewer Padding="36,24,36,24">
+        <StackPanel Spacing="20">
+            <StackPanel.Transitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition IsStaggeringEnabled="True" />
+                </TransitionCollection>
+            </StackPanel.Transitions>
+
+            <!-- Encabezado -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Spacing="4">
+                    <TextBlock
+                        Style="{StaticResource TitleTextBlockStyle}"
+                        Text="¿Por qué va lento ahora?" />
+                    <TextBlock
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource BodyTextBlockStyle}"
+                        Text="Diagnóstico en tiempo real de consumo de CPU, memoria y disco con explicaciones claras." />
+                </StackPanel>
+
+                <!-- Herramientas y Acciones -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <Button
+                        Command="{x:Bind ViewModel.OpenTaskManagerCommand}"
+                        ToolTipService.ToolTip="Abrir el Administrador de Tareas de Windows (taskmgr.exe)">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon FontSize="14" Glyph="&#xE7F8;" />
+                            <TextBlock Text="Admin. Tareas" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Command="{x:Bind ViewModel.OpenResourceMonitorCommand}"
+                        ToolTipService.ToolTip="Abrir el Monitor de Recursos detallado de Windows (resmon.exe)">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon FontSize="14" Glyph="&#xE9D9;" />
+                            <TextBlock Text="Monitor de Recursos" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Command="{x:Bind ViewModel.CaptureCommand}"
+                        Style="{StaticResource PremiumAccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon FontSize="14" Glyph="&#xE72C;" />
+                            <TextBlock Text="Actualizar Diagnóstico" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <!-- Barra de Progreso durante la muestra -->
+            <ProgressBar
+                IsIndeterminate="True"
+                Visibility="{x:Bind ViewModel.IsCapturing, Mode=OneWay}" />
+
+            <!-- Métricas Globales de Recursos (CPU y RAM) -->
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Tarjeta CPU -->
+                <Border
+                    Grid.Column="0"
+                    Style="{StaticResource PremiumCardStyle}"
+                    Padding="20,16">
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border
+                            Width="48"
+                            Height="48"
+                            Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                            CornerRadius="10"
+                            VerticalAlignment="Center">
+                            <FontIcon
+                                FontSize="24"
+                                Glyph="&#xE950;"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                        </Border>
+
+                        <StackPanel Grid.Column="1" Spacing="2">
+                            <TextBlock
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Text="USO TOTAL DE CPU" />
+                            <TextBlock
+                                FontSize="32"
+                                FontWeight="Bold"
+                                Text="{x:Bind ViewModel.CpuPercentageText, Mode=OneWay}" />
+                            <ProgressBar
+                                Maximum="100"
+                                Value="{x:Bind ViewModel.Snapshot.TotalCpuPercentage, Mode=OneWay}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Tarjeta RAM -->
+                <Border
+                    Grid.Column="1"
+                    Style="{StaticResource PremiumCardStyle}"
+                    Padding="20,16">
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border
+                            Width="48"
+                            Height="48"
+                            Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                            CornerRadius="10"
+                            VerticalAlignment="Center">
+                            <FontIcon
+                                FontSize="24"
+                                Glyph="&#xE7B8;"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                        </Border>
+
+                        <StackPanel Grid.Column="1" Spacing="2">
+                            <TextBlock
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Text="USO TOTAL DE MEMORIA RAM" />
+                            <TextBlock
+                                FontSize="32"
+                                FontWeight="Bold"
+                                Text="{x:Bind ViewModel.RamPercentageText, Mode=OneWay}" />
+                            <TextBlock
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Text="{x:Bind ViewModel.RamUsageDetails, Mode=OneWay}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- Alerta: Cuellos de botella detectados -->
+            <Border
+                Visibility="{x:Bind ViewModel.HasBottlenecks, Mode=OneWay}"
+                Style="{StaticResource PremiumCardStyle}"
+                Background="{ThemeResource SystemFillColorCautionBackgroundBrush}"
+                BorderBrush="{ThemeResource SystemFillColorCautionBrush}"
+                BorderThickness="1.5"
+                Padding="16,14">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <FontIcon
+                        FontSize="26"
+                        VerticalAlignment="Top"
+                        Glyph="&#xE7BA;"
+                        Foreground="{ThemeResource SystemFillColorCautionBrush}" />
+
+                    <StackPanel Grid.Column="1" Spacing="8">
+                        <TextBlock
+                            Style="{StaticResource SubtitleTextBlockStyle}"
+                            Foreground="{ThemeResource SystemFillColorCautionBrush}"
+                            Text="Causas identificadas de lentitud" />
+                        
+                        <ItemsRepeater ItemsSource="{x:Bind ViewModel.Bottlenecks, Mode=OneWay}">
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,2">
+                                        <TextBlock Text="•" Foreground="{ThemeResource SystemFillColorCautionBrush}" FontWeight="Bold" />
+                                        <TextBlock Text="{x:Bind}" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                        </ItemsRepeater>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Estado Normal: Sin saturación -->
+            <Border
+                Visibility="{x:Bind ViewModel.HasNoBottlenecks, Mode=OneWay}"
+                Style="{StaticResource PremiumCardStyle}"
+                BorderBrush="{ThemeResource SystemFillColorSuccessBrush}"
+                BorderThickness="1"
+                Padding="16,12">
+                <Grid ColumnSpacing="14">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <FontIcon
+                        FontSize="24"
+                        VerticalAlignment="Center"
+                        Glyph="&#xE930;"
+                        Foreground="{ThemeResource SystemFillColorSuccessBrush}" />
+
+                    <StackPanel Grid.Column="1" Spacing="2">
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Text="El equipo funciona a ritmo normal" />
+                        <TextBlock
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="Ningún proceso en segundo plano está saturando la CPU, la RAM o el disco actualmente." />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Selector de Recurso y Lista de Procesos -->
+            <Grid Margin="0,8,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Spacing="2">
+                    <TextBlock
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="Procesos con mayor consumo" />
+                    <TextBlock
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="{x:Bind ViewModel.StatusText, Mode=OneWay}" />
+                </StackPanel>
+
+                <!-- Pestañas de Filtrado por Recurso -->
+                <ComboBox
+                    Grid.Column="1"
+                    SelectedIndex="{x:Bind ViewModel.SelectedTab, Mode=TwoWay}"
+                    MinWidth="230">
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <FontIcon Glyph="&#xE950;" FontSize="15" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" VerticalAlignment="Center" />
+                            <TextBlock Text="Mayor consumo de CPU" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <FontIcon Glyph="&#xE7B8;" FontSize="15" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" VerticalAlignment="Center" />
+                            <TextBlock Text="Mayor consumo de RAM" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <FontIcon Glyph="&#xEDA2;" FontSize="15" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" VerticalAlignment="Center" />
+                            <TextBlock Text="Mayor actividad de Disco" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </ComboBoxItem>
+                </ComboBox>
+            </Grid>
+
+            <!-- Lista de Procesos en Vivo Agrupados por Aplicación (Estilo Administrador de Tareas) -->
+            <ItemsRepeater ItemsSource="{x:Bind ViewModel.ProcessGroups, Mode=OneWay}">
+                <ItemsRepeater.Layout>
+                    <StackLayout Spacing="8" />
+                </ItemsRepeater.Layout>
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate x:DataType="models:AppProcessGroup">
+                        <Border
+                            DataContext="{x:Bind}"
+                            Style="{StaticResource PremiumCardStyle}"
+                            Padding="16,12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Fila Principal: Grupo / Aplicación -->
+                                <Grid Grid.Row="0" ColumnSpacing="12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" MinWidth="105" />
+                                        <ColumnDefinition Width="Auto" MinWidth="105" />
+                                        <ColumnDefinition Width="Auto" MinWidth="105" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Botón Chevron Desplegable (solo si tiene múltiples procesos) -->
+                                    <Button
+                                        Grid.Column="0"
+                                        Width="30" Height="30"
+                                        Padding="0"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        VerticalAlignment="Center"
+                                        Visibility="{x:Bind HasMultipleProcesses, Mode=OneWay}"
+                                        Tapped="ToggleExpand_Tapped"
+                                        ToolTipService.ToolTip="Mostrar/ocultar subprocesos">
+                                        <FontIcon FontSize="12" Glyph="{x:Bind ExpandGlyph, Mode=OneWay}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                    </Button>
+
+                                    <!-- Espaciador si solo es 1 proceso para mantener alineación -->
+                                    <Border
+                                        Grid.Column="0"
+                                        Width="30" Height="30"
+                                        Visibility="{x:Bind HasMultipleProcesses, Converter={StaticResource InverseBoolToVisibilityConverter}, Mode=OneWay}" />
+
+                                    <!-- Información del Proceso / Aplicación -->
+                                    <StackPanel Grid.Column="1" Spacing="3" VerticalAlignment="Center" Tapped="CardHeader_Tapped">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <TextBlock FontWeight="SemiBold" FontSize="14" Text="{x:Bind DisplayName}" />
+
+                                            <!-- Badge contador de instancias si hay > 1 -->
+                                            <Border
+                                                Padding="7,1"
+                                                Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                                CornerRadius="4"
+                                                VerticalAlignment="Center"
+                                                Visibility="{x:Bind HasMultipleProcesses, Mode=OneWay}">
+                                                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="White" FontWeight="Bold" Text="{x:Bind ProcessCount}" />
+                                            </Border>
+
+                                            <!-- PID si solo hay 1 proceso -->
+                                            <Border
+                                                Padding="6,1"
+                                                Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                                                CornerRadius="4"
+                                                VerticalAlignment="Center"
+                                                Visibility="{x:Bind HasMultipleProcesses, Converter={StaticResource InverseBoolToVisibilityConverter}, Mode=OneWay}">
+                                                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind MainPid}" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <!-- Título de ventana principal si existe -->
+                                        <TextBlock
+                                            Text="{x:Bind MainWindowTitle}"
+                                            Style="{StaticResource CaptionTextBlockStyle}"
+                                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                            TextTrimming="CharacterEllipsis"
+                                            MaxLines="1"
+                                            Visibility="{x:Bind MainWindowTitle, Converter={StaticResource NullToCollapsedConverter}}" />
+
+                                        <!-- Nota diagnóstica -->
+                                        <TextBlock
+                                            Style="{StaticResource CaptionTextBlockStyle}"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Text="{x:Bind DiagnosisNote}"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+
+                                    <!-- Consumo Agregado de CPU -->
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center" Spacing="2">
+                                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="CPU" />
+                                        <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="{x:Bind TotalCpuPercentage}" />
+                                    </StackPanel>
+
+                                    <!-- Consumo Agregado de RAM -->
+                                    <StackPanel Grid.Column="3" VerticalAlignment="Center" Spacing="2">
+                                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="RAM" />
+                                        <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="{x:Bind TotalMemoryDisplay}" />
+                                    </StackPanel>
+
+                                    <!-- Actividad Agregada de Disco -->
+                                    <StackPanel Grid.Column="4" VerticalAlignment="Center" Spacing="2">
+                                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="Disco I/O" />
+                                        <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="{x:Bind TotalDiskIoDisplay}" />
+                                    </StackPanel>
+
+                                    <!-- Botón Finalizar Aplicación Completa -->
+                                    <Button
+                                        Grid.Column="5"
+                                        VerticalAlignment="Center"
+                                        IsEnabled="{x:Bind IsTerminable}"
+                                        Tapped="TerminateGroupButton_Tapped"
+                                        ToolTipService.ToolTip="Forzar el cierre de todas las instancias de esta aplicación">
+                                        <StackPanel Orientation="Horizontal" Spacing="6">
+                                            <FontIcon FontSize="12" Glyph="&#xE711;" Foreground="{ThemeResource SystemFillColorCriticalBrush}" />
+                                            <TextBlock Text="Finalizar" />
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+
+                                <!-- Desplegable de Subprocesos individuales (visible solo si IsExpanded == true) -->
+                                <Border
+                                    Grid.Row="1"
+                                    Margin="38,10,0,0"
+                                    Padding="14,10"
+                                    Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                                    CornerRadius="8"
+                                    Visibility="{x:Bind IsExpanded, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                                    <StackPanel Spacing="8">
+                                        <TextBlock
+                                            Style="{StaticResource CaptionTextBlockStyle}"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            FontWeight="SemiBold"
+                                            Text="Subprocesos e instancias activas:" />
+
+                                        <ItemsRepeater ItemsSource="{x:Bind SubProcesses}">
+                                            <ItemsRepeater.Layout>
+                                                <StackLayout Spacing="6" />
+                                            </ItemsRepeater.Layout>
+                                            <ItemsRepeater.ItemTemplate>
+                                                <DataTemplate x:DataType="models:ProcessResourceInfo">
+                                                    <Border
+                                                        DataContext="{x:Bind}"
+                                                        Padding="12,8"
+                                                        Background="{ThemeResource LayerFillColorDefaultBrush}"
+                                                        CornerRadius="6"
+                                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                        BorderThickness="1">
+                                                        <Grid ColumnSpacing="12">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" MinWidth="95" />
+                                                                <ColumnDefinition Width="Auto" MinWidth="95" />
+                                                                <ColumnDefinition Width="Auto" MinWidth="95" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <!-- Detalle del subproceso: PID y ventana si tiene -->
+                                                            <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="2">
+                                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                                    <Border Padding="6,1" Background="{ThemeResource SubtleFillColorSecondaryBrush}" CornerRadius="4">
+                                                                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" FontWeight="SemiBold" Text="{x:Bind Pid}" />
+                                                                    </Border>
+                                                                    <TextBlock
+                                                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                                                        Text="{x:Bind WindowTitle}"
+                                                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                                        TextTrimming="CharacterEllipsis"
+                                                                        MaxLines="1"
+                                                                        Visibility="{x:Bind WindowTitle, Converter={StaticResource NullToCollapsedConverter}}" />
+                                                                </StackPanel>
+                                                            </StackPanel>
+
+                                                            <!-- CPU individual -->
+                                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind CpuPercentage}" />
+                                                            </StackPanel>
+
+                                                            <!-- RAM individual -->
+                                                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind MemoryDisplay}" />
+                                                            </StackPanel>
+
+                                                            <!-- Disco individual -->
+                                                            <StackPanel Grid.Column="3" VerticalAlignment="Center">
+                                                                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind DiskIoDisplay}" />
+                                                            </StackPanel>
+
+                                                            <!-- Botón Finalizar subproceso específico -->
+                                                            <Button
+                                                                Grid.Column="4"
+                                                                Padding="8,4"
+                                                                VerticalAlignment="Center"
+                                                                IsEnabled="{x:Bind IsTerminable}"
+                                                                Tapped="TerminateSubProcessButton_Tapped"
+                                                                ToolTipService.ToolTip="Finalizar únicamente este subproceso específico">
+                                                                <FontIcon FontSize="11" Glyph="&#xE711;" Foreground="{ThemeResource SystemFillColorCriticalBrush}" />
+                                                            </Button>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsRepeater.ItemTemplate>
+                                        </ItemsRepeater>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

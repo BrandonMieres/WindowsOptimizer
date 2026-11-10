@@ -1,0 +1,1163 @@
+[
+  {
+    "id": "privacy.disable-advertising-id",
+    "name": "Desactivar ID de publicidad del usuario",
+    "description": "Impide que Windows use un identificador único para mostrarte publicidad personalizada en tu cuenta de usuario.",
+    "category": "privacy",
+    "risk": "low",
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "windows": {
+      "min_build": 17763,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo",
+        "name": "Enabled",
+        "bad_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo",
+        "name": "Enabled",
+        "value": 0,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows asigna un identificador único (Advertising ID) a cada usuario para rastrear preferencias y personalizar anuncios en apps.",
+      "why": "Desactivarlo reduce drásticamente el rastreo publicitario sin afectar al funcionamiento del sistema.",
+      "changes": "Establece la clave de registro HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo\\Enabled en 0."
+    },
+    "impact": {
+      "type": "privacy",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": [
+      "WinUtil: tweak de telemetría",
+      "CATALOGO_OPTIMIZACIONES.md §3.1"
+    ]
+  },
+  {
+    "id": "privacy.disable-telemetry-collection",
+    "name": "Desactivar recopilación de telemetría",
+    "description": "Reduce al mínimo los datos de diagnóstico que Windows envía a Microsoft.",
+    "category": "privacy",
+    "risk": "low",
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "windows": {
+      "min_build": 17763,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection",
+        "name": "AllowTelemetry",
+        "expected_value": 0
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection",
+        "name": "AllowTelemetry",
+        "value": 0,
+        "kind": "DWord"
+      },
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+        "name": "AllowTelemetry",
+        "value": 0,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows recopila datos de uso y diagnóstico (telemetría) y los envía a Microsoft.",
+      "why": "Reducir la telemetría mejora la privacidad y puede reducir ligeramente el uso de red en segundo plano.",
+      "changes": "Pone AllowTelemetry a 0 en las dos claves de directivas de DataCollection (HKLM)."
+    },
+    "impact": {
+      "type": "privacy",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry",
+      "CATALOGO_OPTIMIZACIONES.md §3.1"
+    ]
+  },
+  {
+    "id": "privacy.disable-feedback-notifications",
+    "name": "Desactivar notificaciones de feedback",
+    "description": "Evita que Windows solicite feedback sobre el sistema operativo.",
+    "category": "privacy",
+    "risk": "low",
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "windows": {
+      "min_build": 17763,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+        "name": "DoNotShowFeedbackNotifications",
+        "expected_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+        "name": "DoNotShowFeedbackNotifications",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows muestra notificaciones periódicas pidiendo valorar el sistema operativo.",
+      "why": "Son molestas y no aportan beneficio al usuario final.",
+      "changes": "Activa DoNotShowFeedbackNotifications en la directiva de DataCollection."
+    },
+    "impact": {
+      "type": "privacy",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry",
+      "CATALOGO_OPTIMIZACIONES.md §3.1"
+    ]
+  },
+  {
+    "id": "privacy.disable-tailored-experiences",
+    "name": "Desactivar experiencias personalizadas",
+    "description": "Evita que Windows use datos de diagnóstico para personalizar sugerencias y anuncios.",
+    "category": "privacy",
+    "risk": "low",
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "windows": {
+      "min_build": 17763,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+        "name": "DisableTailoredExperiencesWithDiagnosticData",
+        "expected_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+        "name": "DisableTailoredExperiencesWithDiagnosticData",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows utiliza los datos de diagnóstico recopilados para mostrarte contenido personalizado, como sugerencias y anuncios.",
+      "why": "Desactivarlo reduce el rastreo sin afectar funcionalidad.",
+      "changes": "Activa DisableTailoredExperiencesWithDiagnosticData en HKCU\\CloudContent."
+    },
+    "impact": {
+      "type": "privacy",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry",
+      "CATALOGO_OPTIMIZACIONES.md §3.1"
+    ]
+  },
+  {
+    "id": "privacy.disable-windows-error-reporting",
+    "name": "Desactivar informes de errores de Windows",
+    "description": "Impide que Windows envíe informes de errores automáticamente a Microsoft.",
+    "category": "privacy",
+    "risk": "low",
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "windows": {
+      "min_build": 17763,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Microsoft\\Windows\\Windows Error Reporting",
+        "name": "Disabled",
+        "expected_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Microsoft\\Windows\\Windows Error Reporting",
+        "name": "Disabled",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows Error Reporting envía datos sobre fallos y errores del sistema a Microsoft.",
+      "why": "Reduce la información enviada. En entornos de desarrollo puede ser útil mantenerlo activado para diagnosticar problemas.",
+      "changes": "Pone a 1 la clave Disabled en Windows Error Reporting (HKLM)."
+    },
+    "impact": {
+      "type": "privacy",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry",
+      "CATALOGO_OPTIMIZACIONES.md §3.1"
+    ]
+  },
+  {
+    "id": "privacy.disable-activity-history",
+    "name": "Desactivar historial de actividad",
+    "description": "Impide que Windows guarde un historial de las aplicaciones y sitios web que usas.",
+    "category": "privacy",
+    "risk": "low",
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "windows": {
+      "min_build": 17763,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+        "name": "PublishUserActivities",
+        "expected_value": 0
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+        "name": "PublishUserActivities",
+        "value": 0,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "El Historial de Actividad recopila y envía a Microsoft qué aplicaciones abres y qué páginas visitas.",
+      "why": "Desactivarlo mejora tu privacidad local y remota.",
+      "changes": "Cambia PublishUserActivities a 0 en las directivas de Sistema (HKLM)."
+    },
+    "impact": {
+      "type": "privacy",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": [
+      "WinUtil: Activity History - Disable"
+    ]
+  },
+  {
+    "id": "privacy.disable-location-tracking",
+    "name": "Desactivar rastreo de ubicación",
+    "description": "Desactiva los servicios de localización de Windows a nivel de sistema.",
+    "category": "privacy",
+    "risk": "low",
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location",
+        "name": "Value",
+        "expected_value": "Deny"
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location",
+        "name": "Value",
+        "value": "Deny",
+        "kind": "String"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows y las aplicaciones instaladas pueden acceder a la ubicación física de tu dispositivo.",
+      "why": "Denegar el acceso protege tu privacidad de rastreos no deseados.",
+      "changes": "Establece el ConsentStore de localización en 'Deny'."
+    },
+    "impact": {
+      "type": "privacy",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": [
+      "WinUtil: Location Tracking - Disable"
+    ]
+  },
+  {
+    "id": "privacy.disable-advertising-info",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AdvertisingInfo",
+        "name": "DisabledByGroupPolicy",
+        "value": 1,
+        "type": "registry_set",
+        "kind": "DWord"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AdvertisingInfo",
+        "name": "DisabledByGroupPolicy",
+        "expected_value": 1
+      }
+    },
+    "name": "Bloquear ID de publicidad por directiva global (GPO)",
+    "risk": "low",
+    "description": "Desactiva globalmente por directiva de grupo el identificador publicitario para todos los usuarios y aplicaciones del equipo.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Aplica una directiva administrativa en el sistema para forzar la desactivación del identificador de anuncios en todo el equipo.",
+      "why": "Protege tu privacidad desvinculando la actividad de cualquier usuario de un ID de seguimiento.",
+      "changes": "Activa DisabledByGroupPolicy en HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AdvertisingInfo."
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry",
+      "CATALOGO_OPTIMIZACIONES.md 3.1"
+    ],
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": true
+  },
+  {
+    "id": "privacy.contentdelivery.contentdeliveryallowed",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "ContentDeliveryAllowed",
+        "value": 0,
+        "type": "registry_set",
+        "kind": "DWord"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "ContentDeliveryAllowed",
+        "expected_value": 0
+      }
+    },
+    "name": "Desactivar Content Delivery Manager (Promociones generales)",
+    "risk": "low",
+    "description": "Desactiva el motor de Windows que descarga contenido patrocinado, sugerencias y aplicaciones recomendadas en segundo plano.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Content Delivery Manager es el servicio de Microsoft encargado de inyectar contenido publicitario, enlaces patrocinados y aplicaciones recomendadas en el sistema.",
+      "why": "Desactivarlo reduce el tráfico de red de fondo, evita descargas no solicitadas y mantiene el sistema limpio de promociones.",
+      "changes": "Establece ContentDeliveryAllowed en 0 en HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.2"
+    ],
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": false
+  },
+  {
+    "id": "privacy.contentdelivery.oempreinstalledappsenabled",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "OemPreInstalledAppsEnabled",
+        "value": 0,
+        "type": "registry_set",
+        "kind": "DWord"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "OemPreInstalledAppsEnabled",
+        "expected_value": 0
+      }
+    },
+    "name": "Bloquear software preinstalado de fabricante (OEM)",
+    "risk": "low",
+    "description": "Evita que Windows descargue e instale automáticamente aplicaciones de prueba y paquetes promocionales del fabricante del equipo.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Los fabricantes (HP, Lenovo, Asus, etc.) colaboran con Microsoft para descargar automáticamente sus propias aplicaciones y software de terceros en el equipo.",
+      "why": "Evita que se llene el disco de software inflado (bloatware) que raramente se utiliza y que consume recursos al inicio.",
+      "changes": "Establece OemPreInstalledAppsEnabled en 0 en HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.2"
+    ],
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": false
+  },
+  {
+    "id": "privacy.contentdelivery.preinstalledappsenabled",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "PreInstalledAppsEnabled",
+        "value": 0,
+        "type": "registry_set",
+        "kind": "DWord"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "PreInstalledAppsEnabled",
+        "expected_value": 0
+      }
+    },
+    "name": "Bloquear descarga automática de bloatware de la Tienda",
+    "risk": "low",
+    "description": "Impide que Windows descargue automáticamente juegos y aplicaciones patrocinadas (como Candy Crush o redes sociales) en segundo plano.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Windows incluye una lista de aplicaciones de la Microsoft Store que se descargan de forma silenciosa e independiente de la voluntad del usuario.",
+      "why": "Ahorra ancho de banda, espacio en el almacenamiento principal y evita procesos publicitarios en segundo plano.",
+      "changes": "Establece PreInstalledAppsEnabled en 0 en HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.2"
+    ],
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": false
+  },
+  {
+    "id": "privacy.contentdelivery.preinstalledappseverenabled",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "PreInstalledAppsEverEnabled",
+        "value": 0,
+        "type": "registry_set",
+        "kind": "DWord"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "PreInstalledAppsEverEnabled",
+        "expected_value": 0
+      }
+    },
+    "name": "Bloquear reactivación de apps promocionales tras actualizar",
+    "risk": "low",
+    "description": "Evita que Windows vuelva a marcar y reintentar la descarga de aplicaciones promocionales tras una actualización de características del sistema.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Esta directiva de registro controla si el sistema tiene permitido volver a activar el catálogo de aplicaciones promocionales con el tiempo.",
+      "why": "Garantiza que una vez eliminadas las aplicaciones no deseadas, Windows no vuelva a descargarlas automáticamente en el futuro.",
+      "changes": "Establece PreInstalledAppsEverEnabled en 0 en HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.2"
+    ],
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": false
+  },
+  {
+    "id": "privacy.contentdelivery.silentinstalledappsenabled",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "SilentInstalledAppsEnabled",
+        "value": 0,
+        "type": "registry_set",
+        "kind": "DWord"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "SilentInstalledAppsEnabled",
+        "expected_value": 0
+      }
+    },
+    "name": "Bloquear instalación silenciosa de software patrocinado",
+    "risk": "low",
+    "description": "Impide que aplicaciones patrocinadas por terceros se instalen en tu ordenador sin mostrar ninguna confirmación ni notificación.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Permite a Windows instalar paquetes de aplicaciones recomendadas sin intervención del usuario cuando el equipo está inactivo.",
+      "why": "Protege la integridad del sistema impidiendo que software no autorizado se agregue a la biblioteca de programas.",
+      "changes": "Establece SilentInstalledAppsEnabled en 0 en HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.2"
+    ],
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": false
+  },
+  {
+    "id": "privacy.contentdelivery.subscribedcontent-338387enabled",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "SubscribedContent-338387Enabled",
+        "value": 0,
+        "type": "registry_set",
+        "kind": "DWord"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "SubscribedContent-338387Enabled",
+        "expected_value": 0
+      }
+    },
+    "name": "Desactivar sugerencias y anuncios en el Menú Inicio",
+    "risk": "low",
+    "description": "Elimina la sección de aplicaciones recomendadas y sugerencias promocionales que aparecen dentro del menú Inicio de Windows.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "La clave SubscribedContent-338387 controla las sugerencias y promociones dinámicas insertadas en el menú Inicio.",
+      "why": "Hace que el menú Inicio sea mucho más rápido, fluido y muestre únicamente tus aplicaciones reales en lugar de publicidad.",
+      "changes": "Establece SubscribedContent-338387Enabled en 0 en HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.2"
+    ],
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": false
+  },
+  {
+    "id": "privacy.contentdelivery.subscribedcontent-338388enabled",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "SubscribedContent-338388Enabled",
+        "value": 0,
+        "type": "registry_set",
+        "kind": "DWord"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "SubscribedContent-338388Enabled",
+        "expected_value": 0
+      }
+    },
+    "name": "Desactivar anuncios y consejos en la Pantalla de Bloqueo",
+    "risk": "low",
+    "description": "Evita que Windows muestre consejos publicitarios, noticias no solicitadas y trucos sobre la pantalla de bloqueo (Windows Spotlight).",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Windows Spotlight proyecta textos y enlaces de interés o promociones de servicios de Microsoft sobre el fondo de pantalla de bloqueo.",
+      "why": "Proporciona una pantalla de bloqueo limpia, privada y sin distracciones publicitarias.",
+      "changes": "Establece SubscribedContent-338388Enabled en 0 en HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.2"
+    ],
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": false
+  },
+  {
+    "id": "privacy.contentdelivery.subscribedcontent-338389enabled",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "SubscribedContent-338389Enabled",
+        "value": 0,
+        "type": "registry_set",
+        "kind": "DWord"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "SubscribedContent-338389Enabled",
+        "expected_value": 0
+      }
+    },
+    "name": "Desactivar sugerencias en la app de Configuración",
+    "risk": "low",
+    "description": "Impide que aparezcan banners promocionales de productos de Microsoft (OneDrive, Game Pass, 365) en la aplicación de Configuración.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "La clave SubscribedContent-338389 inyecta tarjetas de recomendación y publicidad en la página principal de Configuración de Windows.",
+      "why": "Mantiene la app de Configuración centrada exclusivamente en los ajustes del sistema sin banners de venta.",
+      "changes": "Establece SubscribedContent-338389Enabled en 0 en HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.2"
+    ],
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": false
+  },
+  {
+    "id": "privacy.contentdelivery.subscribedcontent-353698enabled",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "SubscribedContent-353698Enabled",
+        "value": 0,
+        "type": "registry_set",
+        "kind": "DWord"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "SubscribedContent-353698Enabled",
+        "expected_value": 0
+      }
+    },
+    "name": "Desactivar anuncios en el Explorador de Archivos",
+    "risk": "low",
+    "description": "Bloquea la inserción de notificaciones promocionales de suscripciones a OneDrive y Office en las ventanas del Explorador de archivos.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Microsoft muestra ocasionalmente banners informativos y promociones de almacenamiento en la nube en la parte superior del Explorador.",
+      "why": "El Explorador de archivos es una herramienta fundamental de trabajo; debe ser completamente neutral y libre de publicidad.",
+      "changes": "Establece SubscribedContent-353698Enabled en 0 en HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.2"
+    ],
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": false
+  },
+  {
+    "id": "privacy.contentdelivery.systempanesuggestionsenabled",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "SystemPaneSuggestionsEnabled",
+        "value": 0,
+        "type": "registry_set",
+        "kind": "DWord"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "name": "SystemPaneSuggestionsEnabled",
+        "expected_value": 0
+      }
+    },
+    "name": "Desactivar sugerencias en el panel del sistema",
+    "risk": "low",
+    "description": "Elimina recomendaciones automáticas y ventanas emergentes de sugerencias en los paneles laterales del sistema operativo.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Controla la aparición de notificaciones tipo 'Consejos de Windows' y recomendaciones en el área de notificaciones y widgets.",
+      "why": "Evita avisos y popups molestos durante el uso diario del ordenador.",
+      "changes": "Establece SystemPaneSuggestionsEnabled en 0 en HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.2"
+    ],
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": false
+  },
+  {
+    "id": "privacy.disable-siuf",
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "impact": {
+      "show_percentage": false,
+      "type": "privacy",
+      "confidence": "high",
+      "estimator": "none"
+    },
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Siuf\\Rules",
+        "name": "NumberOfSIUFInPeriod",
+        "expected_value": 0
+      }
+    },
+    "category": "privacy",
+    "presets": [
+      "standard",
+      "advanced"
+    ],
+    "name": "Desactivar encuestas de opinión de Windows (SIUF)",
+    "description": "Evita que Windows te interrumpa para pedirte opinión sobre tu experiencia de usuario.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "El framework SIUF recopila eventos del sistema y solicita feedback periódico.",
+      "why": "Elimina popups intrusivos solicitando valoraciones y puntuaciones.",
+      "changes": "Configura las políticas de retroalimentación SIUF a 0 (deshabilitado)."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.1"
+    ],
+    "risk": "low",
+    "reversible": true,
+    "apply": [
+      {
+        "kind": "DWord",
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Siuf\\Rules",
+        "name": "NumberOfSIUFInPeriod",
+        "value": 0,
+        "type": "registry_set"
+      }
+    ],
+    "requires_admin": false
+  },
+  {
+    "id": "privacy.disable-powershell-telemetry",
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "impact": {
+      "show_percentage": false,
+      "type": "privacy",
+      "confidence": "high",
+      "estimator": "none"
+    },
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment",
+        "name": "POWERSHELL_TELEMETRY_OPTOUT",
+        "expected_value": "1"
+      }
+    },
+    "category": "privacy",
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "name": "Desactivar telemetría de PowerShell 7+",
+    "description": "Desactiva el envío de métricas de uso y rendimiento a Microsoft desde la línea de comandos.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "PowerShell 7+ recopila estadísticas de comandos ejecutados y rendimiento para telemetría.",
+      "why": "Protege la privacidad de tus scripts y comandos de administración.",
+      "changes": "Establece la variable de entorno POWERSHELL_TELEMETRY_OPTOUT en 1."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.1"
+    ],
+    "risk": "low",
+    "reversible": true,
+    "apply": [
+      {
+        "kind": "String",
+        "path": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment",
+        "name": "POWERSHELL_TELEMETRY_OPTOUT",
+        "value": "1",
+        "type": "registry_set"
+      }
+    ],
+    "requires_admin": true
+  },
+  {
+    "id": "privacy.disable-defender-samples",
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "impact": {
+      "show_percentage": false,
+      "type": "privacy",
+      "confidence": "high",
+      "estimator": "none"
+    },
+    "requires_reboot": false,
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Spynet",
+        "name": "SubmitSamplesConsent",
+        "expected_value": 2
+      }
+    },
+    "category": "privacy",
+    "presets": [
+      "advanced"
+    ],
+    "name": "Desactivar el envío automático de muestras (Windows Defender)",
+    "description": "Evita que Defender envíe archivos sospechosos de tu disco a Microsoft para su análisis automático.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Windows Defender puede cargar muestras de archivos ejecutables y scripts desconocidos a los servidores de Microsoft.",
+      "why": "Evita la subida inadvertida de datos o documentos confidenciales a servidores externos.",
+      "changes": "Establece SubmitSamplesConsent en 2 (Nunca enviar) en la política de Windows Defender."
+    },
+    "sources": [
+      "CATALOGO_OPTIMIZACIONES.md 3.1"
+    ],
+    "risk": "medium",
+    "reversible": true,
+    "apply": [
+      {
+        "kind": "DWord",
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Spynet",
+        "name": "SubmitSamplesConsent",
+        "value": 2,
+        "type": "registry_set"
+      },
+      {
+        "kind": "DWord",
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Spynet",
+        "name": "SpynetReporting",
+        "value": 0,
+        "type": "registry_set"
+      }
+    ],
+    "requires_admin": true
+  }
+]
+

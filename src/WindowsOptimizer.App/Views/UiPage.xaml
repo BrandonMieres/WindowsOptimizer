@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="WindowsOptimizer_App.Views.UiPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:WindowsOptimizer.Core.Models"
+    xmlns:localmodels="using:WindowsOptimizer_App.Models"
+    xmlns:converters="using:WindowsOptimizer_App.Converters"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+
+    <Grid Padding="36,24,36,24">
+        <Grid.Transitions>
+            <TransitionCollection>
+                <EntranceThemeTransition IsStaggeringEnabled="True" />
+            </TransitionCollection>
+        </Grid.Transitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Cabecera -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Spacing="4">
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="{x:Bind ViewModel.CategoryName}" />
+                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                <ComboBox
+                    ItemsSource="{x:Bind ViewModel.AvailablePresets}"
+                    SelectedItem="{x:Bind ViewModel.SelectedPresetItem, Mode=TwoWay}"
+                    MinWidth="150"
+                    VerticalAlignment="Center">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="localmodels:PresetItem">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon FontSize="14" Glyph="{x:Bind Icon}" />
+                                <TextBlock Text="{x:Bind DisplayName}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Command="{x:Bind ViewModel.ScanCommand}" Style="{StaticResource PremiumAccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="14" Glyph="&#xE9D9;" />
+                        <TextBlock Text="Escanear" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{x:Bind ViewModel.ApplyAllCommand}" Style="{StaticResource PremiumButtonStyle}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="14" Glyph="&#xE73E;" />
+                        <TextBlock Text="Aplicar seleccionados" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Indicadores de estado -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="16" Margin="0,0,0,16">
+            <Border Padding="12,8" Background="{ThemeResource SystemFillColorCautionBackgroundBrush}" CornerRadius="6">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon FontSize="14" Glyph="&#xE7BA;" Foreground="{ThemeResource SystemFillColorCautionBrush}" />
+                    <TextBlock><Run Text="{x:Bind ViewModel.DetectedCount, Mode=OneWay}" /><Run Text=" pendientes" /></TextBlock>
+                </StackPanel>
+            </Border>
+            <Border Padding="12,8" Background="{ThemeResource SystemFillColorSuccessBackgroundBrush}" CornerRadius="6">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon FontSize="14" Glyph="&#xE73E;" Foreground="{ThemeResource SystemFillColorSuccessBrush}" />
+                    <TextBlock><Run Text="{x:Bind ViewModel.AppliedCount, Mode=OneWay}" /><Run Text=" aplicados" /></TextBlock>
+                </StackPanel>
+            </Border>
+            <Border Padding="12,8" Background="{ThemeResource SubtleFillColorSecondaryBrush}" CornerRadius="6">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon FontSize="14" Glyph="&#xE930;" />
+                    <TextBlock><Run Text="{x:Bind ViewModel.OptimalCount, Mode=OneWay}" /><Run Text=" ya óptimos" /></TextBlock>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <ProgressBar Grid.Row="1" VerticalAlignment="Bottom" IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+
+        <!-- Lista de Hallazgos -->
+        <ScrollViewer Grid.Row="2">
+            <ItemsRepeater ItemsSource="{x:Bind ViewModel.Findings, Mode=OneWay}">
+                <ItemsRepeater.Layout><StackLayout Spacing="8" /></ItemsRepeater.Layout>
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate x:DataType="models:Finding">
+                        <Border
+                            DataContext="{x:Bind}"
+                            Style="{StaticResource PremiumCardStyle}"
+                            Shadow="{StaticResource SharedShadow}"
+                            Translation="0,0,8"
+                            Padding="16"
+                            Margin="4"
+                            BorderBrush="{x:Bind converters:SelectionConverter.GetBrush(IsSelected), Mode=OneWay}"
+                            BorderThickness="2.5"
+                            Tapped="FindingCard_Tapped">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Width="4" Margin="0,0,16,0" Background="{x:Bind Status, Converter={StaticResource StatusToBrushConverter}, Mode=OneWay}" CornerRadius="2" />
+                                <StackPanel Grid.Column="1" Spacing="4">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <TextBlock FontWeight="SemiBold" Text="{x:Bind Name}" />
+                                        <Border Padding="6,2" Background="{ThemeResource SubtleFillColorSecondaryBrush}" CornerRadius="4">
+                                            <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Category}" />
+                                        </Border>
+                                        <Border Padding="6,2" Background="{ThemeResource SubtleFillColorTertiaryBrush}" CornerRadius="4">
+                                            <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="{x:Bind Status}" />
+                                        </Border>
+                                    </StackPanel>
+                                    <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap" Text="{x:Bind Description}" />
+                                    <StackPanel Spacing="2" Margin="0,4,0,0">
+                                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"><Run FontWeight="SemiBold" Text="¿Qué es? " /><Run Text="{x:Bind Explanation.What}" /></TextBlock>
+                                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"><Run FontWeight="SemiBold" Text="¿Qué cambia? " /><Run Text="{x:Bind Explanation.Changes}" /></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </ScrollViewer>
+    </Grid>
+</Page>

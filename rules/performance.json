@@ -1,0 +1,645 @@
+﻿[
+    {
+        "id":  "perf.longpaths",
+        "category":  "system",
+        "impact":  {
+                       "show_percentage":  false,
+                       "estimator":  "none",
+                       "confidence":  "high",
+                       "type":  "none"
+                   },
+        "apply":  [
+                      {
+                          "path":  "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+                          "name":  "LongPathsEnabled",
+                          "value":  1,
+                          "type":  "registry_set",
+                          "kind":  "DWord"
+                      }
+                  ],
+        "requires_reboot":  true,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+                                        "name":  "LongPathsEnabled",
+                                        "expected_value":  1
+                                    }
+                   },
+        "name":  "Habilitar rutas largas",
+        "risk":  "low",
+        "description":  "Permite rutas de archivo superiores a 260 caracteres (MAX_PATH).",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Establece LongPathsEnabled a 1.",
+                        "why":  "Habilitarlo evita errores al extraer archivos ZIP con carpetas anidadas profundas o programar en Node.js.",
+                        "what":  "Windows tiene un lmite histrico de 260 caracteres para las rutas de archivo."
+                    },
+        "sources":  [
+                        "WinUtil"
+                    ],
+        "presets":  [
+                        "standard",
+                        "advanced"
+                    ],
+        "reversible":  true,
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "requires_admin":  true
+    },
+    {
+        "id":  "perf.autoendtasks",
+        "category":  "system",
+        "impact":  {
+                       "show_percentage":  false,
+                       "estimator":  "none",
+                       "confidence":  "high",
+                       "type":  "none"
+                   },
+        "apply":  [
+                      {
+                          "path":  "HKCU\\Control Panel\\Desktop",
+                          "name":  "AutoEndTasks",
+                          "value":  "1",
+                          "type":  "registry_set",
+                          "kind":  "String"
+                      }
+                  ],
+        "requires_reboot":  false,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKCU\\Control Panel\\Desktop",
+                                        "name":  "AutoEndTasks",
+                                        "expected_value":  "1"
+                                    }
+                   },
+        "name":  "Cerrar tareas automáticamente",
+        "risk":  "medium",
+        "description":  "Cierra automáticamente las aplicaciones que no responden al apagar o reiniciar el sistema.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Establece AutoEndTasks a 1 (String).",
+                        "why":  "Acelera el apagado forzando el cierre de programas bloqueados. Puede causar prdida de datos si un programa no haba guardado.",
+                        "what":  "Cuando apagas el PC, Windows espera a que los programas se cierren, y a veces se queda \u0027colgado\u0027 esperando."
+                    },
+        "sources":  [
+                        "WinUtil"
+                    ],
+        "presets":  [
+                        "standard",
+                        "advanced"
+                    ],
+        "reversible":  true,
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "requires_admin":  false
+    },
+    {
+        "id":  "perf.networkthrottling",
+        "category":  "network",
+        "impact":  {
+                       "show_percentage":  false,
+                       "estimator":  "none",
+                       "confidence":  "low",
+                       "type":  "none"
+                   },
+        "apply":  [
+                      {
+                          "path":  "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+                          "name":  "NetworkThrottlingIndex",
+                          "value":  4294967295,
+                          "type":  "registry_set",
+                          "kind":  "DWord"
+                      }
+                  ],
+        "requires_reboot":  true,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+                                        "name":  "NetworkThrottlingIndex",
+                                        "expected_value":  4294967295
+                                    }
+                   },
+        "name":  "Desactivar aceleracin de red para multimedia",
+        "risk":  "medium",
+        "description":  "Desactiva la limitacin de red que Windows aplica para dar prioridad al contenido multimedia.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Establece NetworkThrottlingIndex a FFFFFFFF (4294967295).",
+                        "why":  "En redes modernas y para gaming, desactivar esta limitacin puede mejorar el ancho de banda pico.",
+                        "what":  "Windows limita el trfico de red a 10 paquetes por milisegundo al reproducir audio/video para evitar tirones."
+                    },
+        "sources":  [
+                        "WinUtil"
+                    ],
+        "presets":  [
+                        "advanced"
+                    ],
+        "reversible":  true,
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "requires_admin":  true
+    },
+    {
+        "id":  "perf.ndu",
+        "category":  "network",
+        "impact":  {
+                       "show_percentage":  false,
+                       "estimator":  "none",
+                       "confidence":  "medium",
+                       "type":  "none"
+                   },
+        "apply":  [
+                      {
+                          "path":  "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Ndu",
+                          "name":  "Start",
+                          "value":  4,
+                          "type":  "registry_set",
+                          "kind":  "DWord"
+                      }
+                  ],
+        "requires_reboot":  true,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Ndu",
+                                        "name":  "Start",
+                                        "expected_value":  4
+                                    }
+                   },
+        "name":  "Desactivar Monitor de uso de datos de red (NDU)",
+        "risk":  "medium",
+        "description":  "Desactiva NDU, conocido por causar fugas de memoria en el pool no paginado (pérdidas de RAM).",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia el inicio del servicio NDU a 4 (Deshabilitado) desde el registro.",
+                        "why":  "Frecuentemente causa problemas de \u0027memory leak\u0027 en drivers de red, llenando la RAM con los das.",
+                        "what":  "NDU monitoriza cuntos datos usa cada aplicacin."
+                    },
+        "sources":  [
+                        "WinUtil"
+                    ],
+        "presets":  [
+                        "advanced"
+                    ],
+        "reversible":  true,
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "requires_admin":  true
+    },
+    {
+        "id":  "perf.showtaskviewbutton",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "none",
+                       "confidence":  "high",
+                       "estimator":  "none"
+                   },
+        "requires_reboot":  false,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+                                        "name":  "ShowTaskViewButton",
+                                        "expected_value":  0
+                                    }
+                   },
+        "category":  "performance",
+        "presets":  [
+                        "advanced"
+                    ],
+        "name":  "Ocultar botón Vista de Tareas",
+        "description":  "Oculta el botón de Vista de Tareas de la barra de tareas para ahorrar espacio.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia ShowTaskViewButton a 0.",
+                        "what":  "El botón de vista de tareas permite cambiar entre escritorios virtuales.",
+                        "why":  "Mantiene la barra limpia si no usas múltiples escritorios a menudo."
+                    },
+        "sources":  [
+                        "CATALOGO_OPTIMIZACIONES.md 3.3"
+                    ],
+        "risk":  "low",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "kind":  "DWord",
+                          "path":  "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+                          "name":  "ShowTaskViewButton",
+                          "value":  0,
+                          "type":  "registry_set"
+                      }
+                  ],
+        "requires_admin":  false
+    },
+    {
+        "id":  "perf.peopleband",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "none",
+                       "confidence":  "high",
+                       "estimator":  "none"
+                   },
+        "requires_reboot":  false,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\People",
+                                        "name":  "PeopleBand",
+                                        "expected_value":  0
+                                    }
+                   },
+        "category":  "performance",
+        "presets":  [
+                        "standard",
+                        "advanced"
+                    ],
+        "name":  "Desactivar la banda de Contactos (People)",
+        "description":  "Oculta el icono de Contactos en la barra de tareas.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia PeopleBand a 0.",
+                        "what":  "La función \u0027Contactos\u0027 permite anclar a personas en la barra de tareas.",
+                        "why":  "Apenas se utiliza y libera espacio en la barra de tareas."
+                    },
+        "sources":  [
+                        "CATALOGO_OPTIMIZACIONES.md 3.3"
+                    ],
+        "risk":  "low",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "kind":  "DWord",
+                          "path":  "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\People",
+                          "name":  "PeopleBand",
+                          "value":  0,
+                          "type":  "registry_set"
+                      }
+                  ],
+        "requires_admin":  false
+    },
+    {
+        "id":  "perf.launchto",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "none",
+                       "confidence":  "high",
+                       "estimator":  "none"
+                   },
+        "requires_reboot":  false,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+                                        "name":  "LaunchTo",
+                                        "expected_value":  1
+                                    }
+                   },
+        "category":  "performance",
+        "presets":  [
+                        "standard",
+                        "advanced"
+                    ],
+        "name":  "Abrir Explorador en \u0027Este equipo\u0027",
+        "description":  "Hace que el Explorador de archivos se abra en \u0027Este equipo\u0027 en lugar de en \u0027Acceso rápido\u0027.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia LaunchTo a 1.",
+                        "what":  "Ajusta la carpeta predeterminada del Explorador de Windows.",
+                        "why":  "Muchos usuarios prefieren ver sus discos duros de un vistazo al abrir el explorador."
+                    },
+        "sources":  [
+                        "CATALOGO_OPTIMIZACIONES.md 3.3"
+                    ],
+        "risk":  "low",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "kind":  "DWord",
+                          "path":  "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+                          "name":  "LaunchTo",
+                          "value":  1,
+                          "type":  "registry_set"
+                      }
+                  ],
+        "requires_admin":  false
+    },
+    {
+        "id":  "perf.hidescameetnow",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "none",
+                       "confidence":  "high",
+                       "estimator":  "none"
+                   },
+        "requires_reboot":  false,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+                                        "name":  "HideSCAMeetNow",
+                                        "expected_value":  1
+                                    }
+                   },
+        "category":  "performance",
+        "presets":  [
+                        "standard",
+                        "advanced"
+                    ],
+        "name":  "Ocultar Reunirse Ahora (Skype/Meet Now)",
+        "description":  "Oculta el icono de la cámara de Skype en el área de notificación.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia HideSCAMeetNow a 1.",
+                        "what":  "Es una función integrada para lanzar videollamadas rápidas.",
+                        "why":  "Elimina un icono molesto si no utilizas Skype para videollamadas."
+                    },
+        "sources":  [
+                        "CATALOGO_OPTIMIZACIONES.md 3.3"
+                    ],
+        "risk":  "low",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "kind":  "DWord",
+                          "path":  "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+                          "name":  "HideSCAMeetNow",
+                          "value":  1,
+                          "type":  "registry_set"
+                      }
+                  ],
+        "requires_admin":  false
+    },
+    {
+        "id":  "perf.enablefeeds",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "none",
+                       "confidence":  "high",
+                       "estimator":  "none"
+                   },
+        "requires_reboot":  false,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Feeds",
+                                        "name":  "EnableFeeds",
+                                        "expected_value":  0
+                                    }
+                   },
+        "category":  "performance",
+        "presets":  [
+                        "standard",
+                        "advanced"
+                    ],
+        "name":  "Desactivar Noticias e Intereses (Widgets)",
+        "description":  "Oculta el widget del clima y noticias de la barra de tareas.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia EnableFeeds a 0.",
+                        "what":  "El widget del tiempo de la barra de tareas introducido en Windows 10/11.",
+                        "why":  "Consume memoria y a menudo distrae con noticias clickbait."
+                    },
+        "sources":  [
+                        "CATALOGO_OPTIMIZACIONES.md 3.3"
+                    ],
+        "risk":  "low",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "kind":  "DWord",
+                          "path":  "HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Feeds",
+                          "name":  "EnableFeeds",
+                          "value":  0,
+                          "type":  "registry_set"
+                      }
+                  ],
+        "requires_admin":  false
+    },
+    {
+        "id":  "perf.systemresponsiveness",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "none",
+                       "confidence":  "high",
+                       "estimator":  "none"
+                   },
+        "requires_reboot":  true,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+                                        "name":  "SystemResponsiveness",
+                                        "expected_value":  0
+                                    }
+                   },
+        "category":  "performance",
+        "presets":  [
+                        "advanced"
+                    ],
+        "name":  "Mejorar la capacidad de respuesta del sistema",
+        "description":  "Ajusta la prioridad de las aplicaciones multimedia y juegos.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia SystemResponsiveness a 0.",
+                        "what":  "Windows reserva por defecto un 20% de CPU para tareas de baja prioridad; esto lo reduce al 0%.",
+                        "why":  "Puede proporcionar una prioridad de CPU ligeramente más alta a tus juegos en lugar de a servicios de fondo."
+                    },
+        "sources":  [
+                        "CATALOGO_OPTIMIZACIONES.md 3.4"
+                    ],
+        "risk":  "medium",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "kind":  "DWord",
+                          "path":  "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+                          "name":  "SystemResponsiveness",
+                          "value":  0,
+                          "type":  "registry_set"
+                      }
+                  ],
+        "requires_admin":  true
+    },
+    {
+        "id":  "perf.irpstacksize",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "none",
+                       "confidence":  "high",
+                       "estimator":  "none"
+                   },
+        "requires_reboot":  true,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKLM\\SYSTEM\\CurrentControlSet\\Services\\LanmanServer\\Parameters",
+                                        "name":  "IRPStackSize",
+                                        "expected_value":  30
+                                    }
+                   },
+        "category":  "performance",
+        "presets":  [
+                        "advanced"
+                    ],
+        "name":  "Aumentar IRPStackSize para red",
+        "description":  "Aumenta la memoria asignada para las operaciones de red compartida.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia IRPStackSize a 30.",
+                        "what":  "Es la cantidad de búferes de pila que usa el servicio de Servidor.",
+                        "why":  "Puede prevenir errores al transferir archivos grandes por red local (LAN)."
+                    },
+        "sources":  [
+                        "CATALOGO_OPTIMIZACIONES.md 3.4"
+                    ],
+        "risk":  "medium",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "kind":  "DWord",
+                          "path":  "HKLM\\SYSTEM\\CurrentControlSet\\Services\\LanmanServer\\Parameters",
+                          "name":  "IRPStackSize",
+                          "value":  30,
+                          "type":  "registry_set"
+                      }
+                  ],
+        "requires_admin":  true
+    },
+    {
+        "id":  "perf.dodownloadmode",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "none",
+                       "confidence":  "high",
+                       "estimator":  "none"
+                   },
+        "requires_reboot":  false,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization",
+                                        "name":  "DODownloadMode",
+                                        "expected_value":  0
+                                    }
+                   },
+        "category":  "performance",
+        "presets":  [
+                        "standard",
+                        "advanced"
+                    ],
+        "name":  "Desactivar Optimización de Distribución (P2P)",
+        "description":  "Evita que Windows comparta actualizaciones con otros PCs en Internet.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia DODownloadMode a 0 (Solo HTTP).",
+                        "what":  "Delivery Optimization es un sistema P2P para repartir la carga de descargar actualizaciones.",
+                        "why":  "Ahorra ancho de banda de subida impidiendo que tu PC actúe como servidor para otros usuarios de Windows."
+                    },
+        "sources":  [
+                        "CATALOGO_OPTIMIZACIONES.md 3.4"
+                    ],
+        "risk":  "low",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "kind":  "DWord",
+                          "path":  "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization",
+                          "name":  "DODownloadMode",
+                          "value":  0,
+                          "type":  "registry_set"
+                      }
+                  ],
+        "requires_admin":  true
+    }
+]

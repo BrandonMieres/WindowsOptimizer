@@ -1,0 +1,196 @@
+﻿[
+    {
+        "id":  "network.set-dns-cloudflare",
+        "name":  "Optimizar DNS (Cloudflare)",
+        "description":  "Configura el DNS primario a Cloudflare (1.1.1.1) para mejorar la resolución de nombres.",
+        "category":  "network",
+        "risk":  "low",
+        "presets":  [
+                        "standard",
+                        "advanced"
+                    ],
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Dnscache\\Parameters",
+                                        "name":  "MaxCacheTtl",
+                                        "expected_value":  86400
+                                    }
+                   },
+        "apply":  [
+                      {
+                          "type":  "registry_set",
+                          "path":  "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Dnscache\\Parameters",
+                          "name":  "MaxCacheTtl",
+                          "value":  86400,
+                          "kind":  "DWord"
+                      }
+                  ],
+        "undo":  "auto_from_snapshot",
+        "reversible":  true,
+        "requires_admin":  true,
+        "requires_reboot":  false,
+        "explain":  {
+                        "what":  "El caché DNS de Windows tiene un TTL máximo limitado. Aumentarlo reduce las consultas DNS repetidas.",
+                        "why":  "Reduce la latencia de resolución DNS al mantener las respuestas en caché más tiempo.",
+                        "changes":  "Establece MaxCacheTtl a 86400 segundos (24 horas) en los parámetros del servicio DNS."
+                    },
+        "impact":  {
+                       "type":  "performance",
+                       "confidence":  "medium",
+                       "show_percentage":  false
+                   },
+        "sources":  [
+                        "CATALOGO_OPTIMIZACIONES.md §4"
+                    ]
+    },
+    {
+        "id":  "network.disable-nagle",
+        "name":  "Desactivar algoritmo de Nagle",
+        "description":  "Reduce la latencia de red desactivando el buffering de paquetes TCP pequeños.",
+        "category":  "network",
+        "risk":  "low",
+        "presets":  [
+                        "advanced"
+                    ],
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
+                                        "name":  "TcpNoDelay",
+                                        "expected_value":  1
+                                    }
+                   },
+        "apply":  [
+                      {
+                          "type":  "registry_set",
+                          "path":  "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
+                          "name":  "TcpNoDelay",
+                          "value":  1,
+                          "kind":  "DWord"
+                      }
+                  ],
+        "undo":  "auto_from_snapshot",
+        "reversible":  true,
+        "requires_admin":  true,
+        "requires_reboot":  true,
+        "explain":  {
+                        "what":  "El algoritmo de Nagle agrupa paquetes TCP pequeños para enviarlos juntos, añadiendo latencia.",
+                        "why":  "Desactivarlo reduce la latencia en aplicaciones interactivas (juegos, escritorio remoto, etc.).",
+                        "changes":  "Establece TcpNoDelay a 1 en los parámetros TCP/IP."
+                    },
+        "impact":  {
+                       "type":  "performance",
+                       "confidence":  "medium",
+                       "show_percentage":  false
+                   },
+        "sources":  [
+                        "CATALOGO_OPTIMIZACIONES.md §4"
+                    ]
+    },
+    {
+        "id":  "network.disable-teredo",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "none",
+                       "confidence":  "high",
+                       "estimator":  "none"
+                   },
+        "requires_reboot":  true,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKLM\\System\\CurrentControlSet\\Services\\Tcpip6\\Parameters",
+                                        "name":  "DisabledComponents",
+                                        "expected_value":  8
+                                    }
+                   },
+        "category":  "network",
+        "presets":  [
+                        "advanced"
+                    ],
+        "name":  "Desactivar Teredo",
+        "description":  "Desactiva la tecnología de transición Teredo IPv6.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia DisabledComponents para bloquear Teredo.",
+                        "what":  "Teredo empaqueta paquetes IPv6 dentro de IPv4 para facilitar la transición.",
+                        "why":  "Teredo a menudo causa problemas en juegos antiguos y no es necesario en la mayoría de conexiones IPv4 modernas."
+                    },
+        "sources":  [
+                        "CATALOGO_OPTIMIZACIONES.md 8"
+                    ],
+        "risk":  "low",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "kind":  "DWord",
+                          "path":  "HKLM\\System\\CurrentControlSet\\Services\\Tcpip6\\Parameters",
+                          "name":  "DisabledComponents",
+                          "value":  8,
+                          "type":  "registry_set"
+                      }
+                  ],
+        "requires_admin":  true
+    },
+    {
+        "id":  "network.prefer-ipv4",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "none",
+                       "confidence":  "high",
+                       "estimator":  "none"
+                   },
+        "requires_reboot":  true,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKLM\\System\\CurrentControlSet\\Services\\Tcpip6\\Parameters",
+                                        "name":  "DisabledComponents",
+                                        "expected_value":  32
+                                    }
+                   },
+        "category":  "network",
+        "presets":  [
+                        "standard",
+                        "advanced"
+                    ],
+        "name":  "Preferir IPv4 sobre IPv6",
+        "description":  "Configura a Windows para preferir resolver direcciones IPv4 antes que IPv6.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Modifica DisabledComponents con valor 32.",
+                        "what":  "Al visitar una web, Windows DNS preguntará primero por la IP antigua en lugar de la nueva.",
+                        "why":  "Mejora la compatibilidad y velocidad si tu proveedor de Internet o router no soportan bien IPv6 nativo."
+                    },
+        "sources":  [
+                        "CATALOGO_OPTIMIZACIONES.md 8"
+                    ],
+        "risk":  "medium",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "kind":  "DWord",
+                          "path":  "HKLM\\System\\CurrentControlSet\\Services\\Tcpip6\\Parameters",
+                          "name":  "DisabledComponents",
+                          "value":  32,
+                          "type":  "registry_set"
+                      }
+                  ],
+        "requires_admin":  true
+    }
+]

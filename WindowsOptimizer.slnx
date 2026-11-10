@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/WindowsOptimizer.Actions/WindowsOptimizer.Actions.csproj" />
+    <Project Path="src/WindowsOptimizer.App/WindowsOptimizer.App.csproj" />
+    <Project Path="src/WindowsOptimizer.Cli/WindowsOptimizer.Cli.csproj" />
+    <Project Path="src/WindowsOptimizer.Core/WindowsOptimizer.Core.csproj" />
+    <Project Path="src/WindowsOptimizer.Infrastructure/WindowsOptimizer.Infrastructure.csproj" />
+    <Project Path="src/WindowsOptimizer.Measurement/WindowsOptimizer.Measurement.csproj" />
+    <Project Path="src/WindowsOptimizer.Platform/WindowsOptimizer.Platform.csproj" />
+    <Project Path="src/WindowsOptimizer.Rules/WindowsOptimizer.Rules.csproj" />
+    <Project Path="src/WindowsOptimizer.Scanners/WindowsOptimizer.Scanners.csproj" />
+    <Project Path="src/WindowsOptimizer.Service/WindowsOptimizer.Service.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WindowsOptimizer.Actions.Tests/WindowsOptimizer.Actions.Tests.csproj" />
+    <Project Path="tests/WindowsOptimizer.Core.Tests/WindowsOptimizer.Core.Tests.csproj" />
+    <Project Path="tests/WindowsOptimizer.Measurement.Tests/WindowsOptimizer.Measurement.Tests.csproj" />
+    <Project Path="tests/WindowsOptimizer.Rules.Tests/WindowsOptimizer.Rules.Tests.csproj" />
+    <Project Path="tests/WindowsOptimizer.Scanners.Tests/WindowsOptimizer.Scanners.Tests.csproj" />
+    <Project Path="tests/WindowsOptimizer.Service.Tests/WindowsOptimizer.Service.Tests.csproj" />
+    <Project Path="src/WindowsOptimizer.Tests/WindowsOptimizer.Tests.csproj" />
+  </Folder>
+</Solution>

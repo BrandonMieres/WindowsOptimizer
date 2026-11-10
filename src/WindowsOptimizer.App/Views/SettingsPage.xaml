@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="WindowsOptimizer_App.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <ScrollViewer Padding="36,24,36,24">
+        <StackPanel Spacing="24">
+            <StackPanel.Transitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition IsStaggeringEnabled="True" />
+                </TransitionCollection>
+            </StackPanel.Transitions>
+
+            <!-- Cabecera -->
+            <StackPanel Spacing="4">
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Ajustes" />
+                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource BodyTextBlockStyle}" Text="Configuración de la aplicación." />
+            </StackPanel>
+
+            <!-- Apariencia -->
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Apariencia" />
+            <Border Style="{StaticResource PremiumCardStyle}">
+                <StackPanel Spacing="16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="Tema" />
+                            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource CaptionTextBlockStyle}" Text="Selecciona el tema visual de la aplicación." />
+                        </StackPanel>
+                        <ComboBox Grid.Column="1" x:Name="ThemeComboBox" Width="160" SelectedIndex="0" SelectionChanged="ThemeComboBox_SelectionChanged">
+                            <ComboBoxItem Content="Sistema" />
+                            <ComboBoxItem Content="Claro" />
+                            <ComboBoxItem Content="Oscuro" />
+                        </ComboBox>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Comportamiento -->
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Comportamiento" />
+            <Border Style="{StaticResource PremiumCardStyle}">
+                <StackPanel Spacing="16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="Crear punto de restauración" />
+                            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource CaptionTextBlockStyle}" Text="Crear un punto de restauración del sistema antes de aplicar cambios." />
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1" x:Name="RestorePointToggle" IsOn="True" />
+                    </Grid>
+
+                    <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="Confirmar antes de aplicar" />
+                            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource CaptionTextBlockStyle}" Text="Mostrar un diálogo de confirmación antes de aplicar cada cambio." />
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1" x:Name="ConfirmToggle" IsOn="True" />
+                    </Grid>
+
+                    <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="Escaneo automático al iniciar" />
+                            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource CaptionTextBlockStyle}" Text="Ejecutar un análisis completo automáticamente al abrir la aplicación." />
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1" x:Name="AutoScanToggle" IsOn="False" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Datos -->
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Datos" />
+            <Border Style="{StaticResource PremiumCardStyle}">
+                <StackPanel Spacing="16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="Limpiar historial" />
+                            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource CaptionTextBlockStyle}" Text="Eliminar todo el historial de cambios y escaneos anteriores." />
+                        </StackPanel>
+                        <Button Grid.Column="1" Content="Limpiar" Style="{StaticResource PremiumButtonStyle}" Click="ClearHistory_Click" />
+                    </Grid>
+
+                    <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="Exportar configuración" />
+                            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource CaptionTextBlockStyle}" Text="Guardar las preferencias y reglas personalizadas en un archivo." />
+                        </StackPanel>
+                        <Button Grid.Column="1" Content="Exportar" Style="{StaticResource PremiumButtonStyle}" IsEnabled="False" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Acerca de -->
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Acerca de" />
+            <Border Style="{StaticResource PremiumCardStyle}">
+                <StackPanel Spacing="12">
+                    <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
+                        <Image Width="48" Height="48" Source="ms-appx:///Assets/AppLogo.png" />
+                        <StackPanel Spacing="2" VerticalAlignment="Center">
+                            <TextBlock FontWeight="Bold" FontSize="16" Text="Windows Optimizer" />
+                            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource CaptionTextBlockStyle}" Text="Versión 1.0.0 (Release Oficial)" />
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"
+                        Text="Herramienta de análisis, optimización y protección de Windows desarrollada con WinUI 3 y .NET 10. Motor de reglas declarativo y reversible inspirado en WinUtil, privacy.sexy y BleachBit." />
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

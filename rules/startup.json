@@ -1,0 +1,120 @@
+[
+  {
+    "id": "startup.disable-cortana",
+    "name": "Desactivar Cortana en el arranque",
+    "description": "Impide que Cortana se inicie automáticamente con Windows.",
+    "category": "startup",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "detect": {
+      "registry": {
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Personalization\\Settings",
+        "name": "AcceptedPrivacyPolicy",
+        "bad_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKCU\\SOFTWARE\\Microsoft\\Personalization\\Settings",
+        "name": "AcceptedPrivacyPolicy",
+        "value": 0,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": false,
+    "requires_reboot": true,
+    "explain": {
+      "what": "Cortana se inicia automáticamente y consume RAM y CPU en segundo plano.",
+      "why": "Desactivarlo reduce el tiempo de arranque y libera recursos del sistema.",
+      "changes": "Desactiva la política de privacidad de Cortana en el registro del usuario."
+    },
+    "impact": {
+      "type": "performance",
+      "confidence": "medium",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil: Disable Cortana", "CATALOGO_OPTIMIZACIONES.md §1.1"]
+  },
+  {
+    "id": "startup.disable-edge-startup-boost",
+    "name": "Desactivar inicio rápido de Edge",
+    "description": "Edge precarga procesos al arrancar Windows para abrirse más rápido, consumiendo RAM.",
+    "category": "startup",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge",
+        "name": "StartupBoostEnabled",
+        "expected_value": 0
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge",
+        "name": "StartupBoostEnabled",
+        "value": 0,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Edge Startup Boost precarga procesos de Edge al iniciar Windows para que se abra más rápido.",
+      "why": "Si no usas Edge como navegador principal, estos procesos consumen ~200MB de RAM innecesariamente.",
+      "changes": "Establece StartupBoostEnabled a 0 en la directiva de Edge."
+    },
+    "impact": {
+      "type": "performance",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["CATALOGO_OPTIMIZACIONES.md §1.1"]
+  },
+  {
+    "id": "startup.disable-search-indexing",
+    "name": "Reducir indexación de Windows Search",
+    "description": "Limita la indexación de búsqueda para reducir I/O de disco en segundo plano.",
+    "category": "startup",
+    "risk": "medium",
+    "presets": ["advanced"],
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+        "name": "AllowCortana",
+        "expected_value": 0
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+        "name": "AllowCortana",
+        "value": 0,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows Search indexa constantemente archivos en disco para hacer búsquedas más rápidas.",
+      "why": "En equipos con SSD el beneficio es marginal y la indexación consume I/O y CPU.",
+      "changes": "Desactiva Cortana integrada en la búsqueda y reduce la indexación."
+    },
+    "impact": {
+      "type": "performance",
+      "confidence": "medium",
+      "show_percentage": false
+    },
+    "sources": ["CATALOGO_OPTIMIZACIONES.md §2.2"]
+  }
+]
+

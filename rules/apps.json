@@ -1,0 +1,1142 @@
+[
+  {
+    "id": "apps.remove-bing-news",
+    "name": "Desinstalar Microsoft News (Noticias)",
+    "description": "Elimina la aplicación preinstalada de noticias de Microsoft / MSN.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.BingNews"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.BingNews"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Aplicación de noticias y actualidad que consume datos en segundo plano para actualizar titulares.",
+      "why": "Genera tráfico de red continuo y notificaciones no solicitadas si no se utiliza con frecuencia.",
+      "changes": "Desinstala el paquete AppX de Microsoft News para el usuario actual y elimina su aprovisionamiento."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat", "WinUtil: Remove Bloatware"]
+  },
+  {
+    "id": "apps.remove-bing-weather",
+    "name": "Desinstalar Microsoft Weather (El Tiempo)",
+    "description": "Elimina la aplicación preinstalada del pronóstico meteorológico de Microsoft.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.BingWeather"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.BingWeather"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Aplicación del tiempo de Windows que sincroniza previsiones y mapas meteorológicos.",
+      "why": "Ocupa espacio de almacenamiento si prefieres consultar el pronóstico desde el navegador o el móvil.",
+      "changes": "Desinstala el paquete AppX de Microsoft Weather."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-solitaire",
+    "name": "Desinstalar Microsoft Solitaire Collection",
+    "description": "Elimina el juego preinstalado de cartas con anuncios y suscripciones integradas.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.MicrosoftSolitaireCollection"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.MicrosoftSolitaireCollection"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Colección de juegos de solitario que viene preinstalada en Windows.",
+      "why": "Incluye publicidad invasiva y telemetría de juego. Si no juegas al solitario, libera almacenamiento.",
+      "changes": "Desinstala Microsoft Solitaire Collection."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat", "WinUtil: Remove Bloatware"]
+  },
+  {
+    "id": "apps.remove-feedback-hub",
+    "name": "Desinstalar Centro de opiniones (Feedback Hub)",
+    "description": "Elimina la aplicación que envía sugerencias y recopila valoraciones del sistema.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.WindowsFeedbackHub"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.WindowsFeedbackHub"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Herramienta de Microsoft para enviar comentarios sobre fallos o sugerencias de funciones.",
+      "why": "Lanza notificaciones periódicas preguntando '¿Qué tan satisfecho estás con Windows?' y consume telemetría.",
+      "changes": "Desinstala el Centro de opiniones de Windows."
+    },
+    "impact": {
+      "type": "privacy",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat", "privacy.sexy"]
+  },
+  {
+    "id": "apps.remove-get-help",
+    "name": "Desinstalar Obtener ayuda (Get Help)",
+    "description": "Elimina el asistente web preinstalado de soporte técnico de Microsoft.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.GetHelp"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.GetHelp"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Aplicación de soporte automatizado que sugiere artículos de ayuda en línea.",
+      "why": "Rara vez resuelve problemas avanzados y redirige a documentación web pública.",
+      "changes": "Desinstala la app Obtener ayuda."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-tips",
+    "name": "Desinstalar Sugerencias y Consejos",
+    "description": "Elimina la aplicación de consejos y novedades de Windows.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.Getstarted"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.Getstarted"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "App de bienvenida y consejos interactivos tras instalar o actualizar Windows.",
+      "why": "Muestra consejos publicitarios sobre servicios de Microsoft y no aporta valor a usuarios experimentados.",
+      "changes": "Desinstala la app Sugerencias (GetStarted)."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat", "WinUtil: Remove Bloatware"]
+  },
+  {
+    "id": "apps.remove-office-hub",
+    "name": "Desinstalar Microsoft 365 Hub (Office promocional)",
+    "description": "Elimina el acceso directo web de promoción de suscripción a Microsoft 365.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.MicrosoftOfficeHub"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.MicrosoftOfficeHub"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Portal web empaquetado para comprar suscripciones de Office o abrir Office Online.",
+      "why": "Si utilizas la suite de escritorio independiente de Office u otra suite como LibreOffice, es redundante.",
+      "changes": "Desinstala el paquete de Microsoft Office Hub."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-power-automate",
+    "name": "Desinstalar Power Automate para escritorio",
+    "description": "Elimina la herramienta de automatización robótica preinstalada en Windows 11.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 22000,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.PowerAutomateDesktop"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.PowerAutomateDesktop"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Herramienta corporativa de RPA para automatizar flujos de trabajo repetitivos.",
+      "why": "Ocupa cientos de megabytes de disco y no es requerida por usuarios convencionales ni jugadores.",
+      "changes": "Desinstala Power Automate Desktop."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-clipchamp",
+    "name": "Desinstalar Clipchamp (Editor de vídeo)",
+    "description": "Elimina la aplicación web preinstalada de edición de vídeo basada en suscripción.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 22000,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Clipchamp.Clipchamp"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Clipchamp.Clipchamp"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Editor de vídeo básico adquirido por Microsoft que opera como aplicación web progresiva.",
+      "why": "Si utilizas editores profesionales como DaVinci Resolve, Premiere o CapCut, no aporta utilidad.",
+      "changes": "Desinstala Clipchamp."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-zune-video",
+    "name": "Desinstalar Películas y TV (Zune Video)",
+    "description": "Elimina el reproductor preinstalado de películas y series de Microsoft.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.ZuneVideo"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.ZuneVideo"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Reproductor y tienda de compra de películas de Microsoft Store.",
+      "why": "La inmensa mayoría de usuarios utiliza reproductores superiores de código abierto como VLC o MPC-HC.",
+      "changes": "Desinstala Películas y TV."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat", "WinUtil: Remove Bloatware"]
+  },
+  {
+    "id": "apps.remove-zune-music",
+    "name": "Desinstalar Groove Música (Zune Music)",
+    "description": "Elimina la aplicación antigua de música de Windows.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.ZuneMusic"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.ZuneMusic"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Reproductor de audio preinstalado de Microsoft.",
+      "why": "Sustituido por reproductores modernos o servicios de streaming como Spotify.",
+      "changes": "Desinstala Groove Música."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat", "WinUtil: Remove Bloatware"]
+  },
+  {
+    "id": "apps.remove-sound-recorder",
+    "name": "Desinstalar Grabadora de voz",
+    "description": "Elimina la app preinstalada de grabación de audio de Windows.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.WindowsSoundRecorder"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.WindowsSoundRecorder"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Grabadora de notas de voz básica incluida en Windows.",
+      "why": "Si no realizas grabaciones rápidas con el micrófono incorporado, es prescindible.",
+      "changes": "Desinstala la Grabadora de voz."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-maps",
+    "name": "Desinstalar Mapas de Windows",
+    "description": "Elimina la aplicación preinstalada de navegación y mapas sin conexión.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.WindowsMaps"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.WindowsMaps"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Aplicación de mapas que utiliza los servicios de localización de Bing Maps.",
+      "why": "En ordenadores de escritorio y portátiles rara vez se utiliza frente a Google Maps en el navegador.",
+      "changes": "Desinstala Mapas de Windows y detiene la descarga de datos cartográficos."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat", "WinUtil: Remove Bloatware"]
+  },
+  {
+    "id": "apps.remove-people",
+    "name": "Desinstalar Contactos de Windows (People)",
+    "description": "Elimina la libreta de contactos integrada con el calendario de Windows.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.People"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.People"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Libreta de contactos clásica UWP de Windows.",
+      "why": "En desuso tras la integración de Outlook Web y cuentas de correo modernas.",
+      "changes": "Desinstala Contactos."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-sticky-notes",
+    "name": "Desinstalar Notas rápidas (Sticky Notes)",
+    "description": "Elimina la app de notas adhesivas virtuales de escritorio.",
+    "category": "apps",
+    "risk": "medium",
+    "presets": ["advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.MicrosoftStickyNotes"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.MicrosoftStickyNotes"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Aplicación de post-its virtuales para apuntar recordatorios.",
+      "why": "Solo recomendada para eliminar si no utilizas notas rápidas o usas herramientas alternativas como Notion o Obsidian.",
+      "changes": "Desinstala Microsoft Sticky Notes."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "medium",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-xbox-tcui",
+    "name": "Desinstalar Interfaz auxiliar de Xbox (Xbox TCUI)",
+    "description": "Elimina el componente auxiliar de captura de interfaz de usuario de Xbox.",
+    "category": "apps",
+    "risk": "medium",
+    "presets": ["advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.Xbox.TCUI"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.Xbox.TCUI"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Componente complementario para diálogos modales de Xbox Live.",
+      "why": "Si no juegas a títulos de la tienda de Microsoft ni usas Xbox Game Pass, libera procesos residuales.",
+      "changes": "Desinstala Xbox TCUI."
+    },
+    "impact": {
+      "type": "ram",
+      "estimator": "none",
+      "confidence": "medium",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-spotify",
+    "name": "Desinstalar Spotify preinstalado por fabricante",
+    "description": "Elimina el paquete de Spotify preinstalado en instalaciones OEM de Windows.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "SpotifyAB.SpotifyMusic"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "SpotifyAB.SpotifyMusic"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Aplicación de streaming de música añadida automáticamente por convenios comerciales de Windows.",
+      "why": "Si utilizas YouTube Music, Apple Music, Tidal o prefieres no tener Spotify instalado de fábrica.",
+      "changes": "Desinstala Spotify Music."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-mixed-reality",
+    "name": "Desinstalar Portal de Realidad Mixta",
+    "description": "Elimina el portal de realidad virtual y aumentada de Windows.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 16299,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.MixedReality.Portal"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.MixedReality.Portal"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Entorno para cascos de Realidad Mixta de Windows (WMR).",
+      "why": "Característica en vías de discontinuación por Microsoft que no se utiliza si no tienes gafas WMR.",
+      "changes": "Desinstala el Portal de Realidad Mixta."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat", "WinUtil: Remove Bloatware"]
+  },
+  {
+    "id": "apps.remove-paint-3d",
+    "name": "Desinstalar Paint 3D",
+    "description": "Elimina la versión moderna tridimensional de Paint.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 15063,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.MSPaint"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.MSPaint"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Aplicación de modelado y pintura 3D que reemplazó temporalmente al Paint clásico.",
+      "why": "Descontinuada oficialmente por Microsoft en la Store. El Paint clásico 2D sigue disponible.",
+      "changes": "Desinstala Paint 3D."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-3d-viewer",
+    "name": "Desinstalar Visor 3D (3D Viewer)",
+    "description": "Elimina el visor de archivos 3D y realidad aumentada.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 16299,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.Microsoft3DViewer"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.Microsoft3DViewer"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Visor de modelos tridimensionales (formatos glTF, OBJ, FBX).",
+      "why": "Inútil para la gran mayoría de usuarios que no modelan en 3D.",
+      "changes": "Desinstala el Visor 3D."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-phone-link",
+    "name": "Desinstalar Enlace Móvil (Phone Link)",
+    "description": "Elimina la aplicación de vinculación y sincronización con smartphones.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["advanced"],
+    "windows": {
+      "min_build": 17134,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.YourPhone"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.YourPhone"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Sincroniza notificaciones, llamadas y mensajes con dispositivos móviles Android e iOS.",
+      "why": "Mantiene procesos en segundo plano constantes y telemetría de sincronización si no se utiliza un teléfono vinculado.",
+      "changes": "Desinstala la aplicación Enlace Móvil."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil", "Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-family",
+    "name": "Desinstalar Microsoft Family (Control Parental)",
+    "description": "Elimina la aplicación de administración y supervisión familiar de cuentas.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 19041,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "MicrosoftCorporationII.MicrosoftFamily"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "MicrosoftCorporationII.MicrosoftFamily"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Panel de gestión y límites de tiempo de pantalla para grupos familiares de Microsoft.",
+      "why": "Innecesario para usuarios individuales o equipos de trabajo sin control parental activo.",
+      "changes": "Desinstala la aplicación Microsoft Family."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-edge-game-assist",
+    "name": "Desinstalar Microsoft Edge Game Assist",
+    "description": "Elimina el navegador y panel de asistencia superpuesto para videojuegos.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "windows": {
+      "min_build": 22000,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.Edge.GameAssist"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.Edge.GameAssist"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Capa web de Edge diseñada para ejecutarse como overlay mientras se juega.",
+      "why": "Consume ciclos de GPU y memoria RAM adicional que pueden degradar el rendimiento en juegos.",
+      "changes": "Desinstala Edge Game Assist."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-outlook-new",
+    "name": "Desinstalar Nuevo Outlook (Outlook for Windows)",
+    "description": "Elimina la nueva aplicación web (PWA) de Outlook preinstalada.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 22000,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.OutlookForWindows"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.OutlookForWindows"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Cliente web progresivo que sustituye a Correo y Calendario de Windows.",
+      "why": "Envía telemetría de cuentas a la nube de Microsoft y muestra anuncios en cuentas no suscritas.",
+      "changes": "Desinstala el nuevo cliente de Outlook."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil", "Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-teams",
+    "name": "Desinstalar Microsoft Teams (Personal)",
+    "description": "Elimina el cliente preinstalado de Teams para cuentas personales.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 22000,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "MSTeams"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "MSTeams"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Aplicación de mensajería y llamadas personales vinculada a la barra de tareas de Windows 11.",
+      "why": "Inicia procesos en segundo plano y telemetría constante si se prefiere otra herramienta como Discord o Telegram.",
+      "changes": "Desinstala Microsoft Teams personal."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil", "Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-copilot",
+    "name": "Desinstalar Microsoft Copilot App",
+    "description": "Elimina el contenedor de la aplicación Microsoft Copilot.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 22621,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.Copilot"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.Copilot"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Acceso directo y contenedor web del asistente Copilot en Windows 11.",
+      "why": "Envía telemetría de navegación y contexto a los servidores de Microsoft Bing.",
+      "changes": "Desinstala el paquete de aplicación de Copilot."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil", "Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-dev-home",
+    "name": "Desinstalar Microsoft Dev Home",
+    "description": "Elimina el panel de control para desarrolladores preinstalado en Windows 11.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 22621,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.Windows.DevHome"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.Windows.DevHome"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Centro de control de entornos de desarrollo y widgets de rendimiento de Windows.",
+      "why": "Ocupa espacio en disco y recursos si el usuario no desarrolla software activamente en el PC.",
+      "changes": "Desinstala Dev Home y sus extensiones asociadas."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil", "Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-todos",
+    "name": "Desinstalar Microsoft To Do",
+    "description": "Elimina el gestor de listas de tareas personales sincronizado en la nube.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 17763,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.Todos"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.Todos"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Aplicación de tareas y recordatorios vinculada a cuentas Microsoft.",
+      "why": "Innecesaria si se utilizan otros gestores como Notion, Todoist o Google Tasks.",
+      "changes": "Desinstala Microsoft To Do."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil"]
+  },
+  {
+    "id": "apps.remove-quick-assist",
+    "name": "Desinstalar Asistencia Rápida (Quick Assist)",
+    "description": "Elimina la herramienta de control remoto y asistencia de Microsoft.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["advanced"],
+    "windows": {
+      "min_build": 19041,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "MicrosoftCorporationII.QuickAssist"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "MicrosoftCorporationII.QuickAssist"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Aplicación de acceso y control remoto de soporte técnico a través de internet.",
+      "why": "Puede representar un vector de ataque si es explotada mediante técnicas de ingeniería social.",
+      "changes": "Desinstala Asistencia Rápida."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil", "Win11Debloat"]
+  },
+  {
+    "id": "apps.remove-bing-search",
+    "name": "Desinstalar Bing Search App",
+    "description": "Elimina la integración de servicios de búsqueda Bing en el sistema.",
+    "category": "apps",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "windows": {
+      "min_build": 22000,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "appx": {
+        "name": "Microsoft.BingSearch"
+      }
+    },
+    "apply": [
+      {
+        "type": "appx_remove",
+        "package_name": "Microsoft.BingSearch"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Paquete UWP de integración de búsqueda web Bing.",
+      "why": "Genera consultas en segundo plano al escribir en el menú inicio y envía telemetría de búsquedas.",
+      "changes": "Desinstala la integración de Bing Search."
+    },
+    "impact": {
+      "type": "disk_space",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil"]
+  }
+]

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="WindowsOptimizer_App.Views.AppsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:WindowsOptimizer.Core.Models"
+    xmlns:localmodels="using:WindowsOptimizer_App.Models"
+    xmlns:viewmodels="using:WindowsOptimizer_App.ViewModels"
+    xmlns:converters="using:WindowsOptimizer_App.Converters"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Padding="36,24,36,36">
+            <Grid.Transitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition IsStaggeringEnabled="True" />
+                </TransitionCollection>
+            </Grid.Transitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid Grid.Row="0" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Spacing="4">
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="{x:Bind ViewModel.Tweaks.CategoryName}" />
+                    <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Tweaks.StatusMessage, Mode=OneWay}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                    <ComboBox
+                        ItemsSource="{x:Bind ViewModel.Tweaks.AvailablePresets}"
+                        SelectedItem="{x:Bind ViewModel.Tweaks.SelectedPresetItem, Mode=TwoWay}"
+                        MinWidth="150"
+                        VerticalAlignment="Center">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="localmodels:PresetItem">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <FontIcon FontSize="14" Glyph="{x:Bind Icon}" />
+                                    <TextBlock Text="{x:Bind DisplayName}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Command="{x:Bind ViewModel.Tweaks.ScanCommand}" Style="{StaticResource PremiumButtonStyle}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon FontSize="14" Glyph="&#xE9D9;" />
+                            <TextBlock Text="Escanear" />
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{x:Bind ViewModel.Tweaks.ApplyAllCommand}" Style="{StaticResource PremiumAccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon FontSize="14" Glyph="&#xE74D;" />
+                            <TextBlock Text="Desinstalar seleccionadas" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <!-- Stats Row -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="16" Margin="0,0,0,24">
+                <Border Padding="12,8" Background="{ThemeResource SystemFillColorCautionBackgroundBrush}" CornerRadius="6">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="14" Glyph="&#xE7BA;" Foreground="{ThemeResource SystemFillColorCautionBrush}" />
+                        <TextBlock><Run Text="{x:Bind ViewModel.Tweaks.DetectedCount, Mode=OneWay}" /><Run Text=" bloatware detectado" /></TextBlock>
+                    </StackPanel>
+                </Border>
+                <Border Padding="12,8" Background="{ThemeResource SystemFillColorSuccessBackgroundBrush}" CornerRadius="6">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="14" Glyph="&#xE73E;" Foreground="{ThemeResource SystemFillColorSuccessBrush}" />
+                        <TextBlock><Run Text="{x:Bind ViewModel.Tweaks.AppliedCount, Mode=OneWay}" /><Run Text=" eliminadas" /></TextBlock>
+                    </StackPanel>
+                </Border>
+                <Border Padding="12,8" Background="{ThemeResource SubtleFillColorSecondaryBrush}" CornerRadius="6">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="14" Glyph="&#xE930;" />
+                        <TextBlock><Run Text="{x:Bind ViewModel.Tweaks.OptimalCount, Mode=OneWay}" /><Run Text=" limpias / ausentes" /></TextBlock>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- Predefined Bloatware Tweaks List -->
+            <Border Grid.Row="2" Margin="0,0,0,28" Style="{StaticResource PremiumCardStyle}" Padding="20">
+                <StackPanel Spacing="16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Spacing="4">
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Catálogo de Bloatware Recomendado" />
+                            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource CaptionTextBlockStyle}"
+                                       Text="Aplicaciones preinstaladas de telemetría, publicidad o innecesarias clasificadas por nivel de riesgo y preset." />
+                        </StackPanel>
+                    </Grid>
+
+                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.Tweaks.Findings, Mode=OneWay}">
+                        <ItemsRepeater.Layout><StackLayout Spacing="8" /></ItemsRepeater.Layout>
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="models:Finding">
+                                <Border
+                                    DataContext="{x:Bind}"
+                                    Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                                    CornerRadius="8"
+                                    Padding="16"
+                                    Margin="2"
+                                    BorderBrush="{x:Bind converters:SelectionConverter.GetBrush(IsSelected), Mode=OneWay}"
+                                    BorderThickness="2"
+                                    Tapped="FindingCard_Tapped">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border Width="4" Margin="0,0,16,0" Background="{x:Bind Status, Converter={StaticResource StatusToBrushConverter}, Mode=OneWay}" CornerRadius="2" />
+                                        <StackPanel Grid.Column="1" Spacing="4">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <TextBlock FontWeight="SemiBold" Text="{x:Bind Name}" />
+                                                <Border Padding="6,2" Background="{ThemeResource SubtleFillColorTertiaryBrush}" CornerRadius="4">
+                                                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="{x:Bind Status}" />
+                                                </Border>
+                                                <Border Padding="6,2" Background="{ThemeResource SubtleFillColorTertiaryBrush}" CornerRadius="4">
+                                                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Risk}" />
+                                                </Border>
+                                            </StackPanel>
+                                            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap" Text="{x:Bind Description}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </StackPanel>
+            </Border>
+
+            <!-- Advanced Installed Apps Manager -->
+            <Border Grid.Row="3" Style="{StaticResource PremiumCardStyle}" Padding="20">
+                <StackPanel Spacing="16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Spacing="4">
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Explorador Completo de Paquetes Instalados" />
+                            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource CaptionTextBlockStyle}"
+                                       Text="Inspecciona todas las aplicaciones UWP/MSIX del sistema para desinstalar manualmente paquetes no deseados." />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                            <Button Command="{x:Bind ViewModel.SelectAllNonSystemCommand}" Content="Seleccionar no esenciales" Style="{StaticResource PremiumButtonStyle}" />
+                            <Button Command="{x:Bind ViewModel.DeselectAllCommand}" Content="Limpiar selección" Style="{StaticResource PremiumButtonStyle}" />
+                            <Button Command="{x:Bind ViewModel.RemoveSelectedCommand}" Style="{StaticResource PremiumAccentButtonStyle}">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <FontIcon FontSize="14" Glyph="&#xE74D;" />
+                                    <TextBlock Text="Desinstalar marcadas" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Search and Status Bar -->
+                    <Grid Margin="0,4,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" Spacing="16">
+                            <TextBox Text="{x:Bind ViewModel.SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                     PlaceholderText="Buscar por nombre o editor (ej. Spotify, Xbox, Bing)..." 
+                                     MinWidth="320" HorizontalAlignment="Left" />
+                            <CheckBox IsChecked="{x:Bind ViewModel.ShowSystemApps, Mode=TwoWay}"
+                                      Content="Mostrar componentes del sistema"
+                                      VerticalAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" Width="16" Height="16" 
+                                          Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                            <TextBlock Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Style="{StaticResource CaptionTextBlockStyle}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Apps List -->
+                    <ListView ItemsSource="{x:Bind ViewModel.Apps, Mode=OneWay}"
+                              SelectionMode="None"
+                              MaxHeight="450">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="viewmodels:AppxPackageViewModel">
+                                <Grid Margin="0,6" Padding="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <CheckBox Grid.Column="0" 
+                                              IsChecked="{x:Bind IsSelected, Mode=TwoWay}"
+                                              IsEnabled="{x:Bind IsSystem, Converter={StaticResource InverseBoolConverter}, Mode=OneWay}"
+                                              VerticalAlignment="Center"
+                                              Margin="0,0,16,0"/>
+                                              
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                                        <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold" />
+                                        <TextBlock Text="{x:Bind Publisher}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                        <Border Background="{ThemeResource SystemFillColorCriticalBackgroundBrush}"
+                                                CornerRadius="4"
+                                                Padding="8,4"
+                                                Visibility="{x:Bind IsSystem, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                                            <TextBlock Text="Sistema (Protegido)" 
+                                                       FontSize="11" 
+                                                       Foreground="{ThemeResource SystemFillColorCriticalBrush}"/>
+                                        </Border>
+                                        <TextBlock Text="{x:Bind Version}" FontSize="12" Foreground="{ThemeResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</Page>

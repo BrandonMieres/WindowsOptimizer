@@ -1,0 +1,200 @@
+[
+  {
+    "id": "cleaner.windows.temp",
+    "category": "cleaners",
+    "name": "Temporales de Windows",
+    "description": "Limpia la carpeta de Windows Temp utilizada por el sistema.",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "detect": {
+      "folder": {
+        "path": "%WinDir%\\Temp"
+      }
+    },
+    "apply": [
+      {
+        "type": "folder_clean",
+        "path": "%WinDir%\\Temp"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Carpeta temporal principal de Windows donde se guardan restos de actualizaciones y procesos de sistema.",
+      "why": "Con el tiempo acumula archivos basura que ocupan espacio inútilmente.",
+      "changes": "Se intentará eliminar todo el contenido."
+    },
+    "impact": {
+      "type": "diskSpace",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": []
+  },
+  {
+    "id": "cleaner.user.temp",
+    "category": "cleaners",
+    "name": "Temporales del Usuario",
+    "description": "Limpia la carpeta Temp del usuario actual.",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "detect": {
+      "folder": {
+        "path": "%Temp%"
+      }
+    },
+    "apply": [
+      {
+        "type": "folder_clean",
+        "path": "%Temp%"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Carpeta temporal donde las aplicaciones guardan archivos temporales mientras se ejecutan.",
+      "why": "Archivos basura, cachés de instalación y logs que nunca se borran solos.",
+      "changes": "Se intentará eliminar todo el contenido."
+    },
+    "impact": {
+      "type": "diskSpace",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": []
+  },
+  {
+    "id": "cleaner.software_distribution",
+    "category": "cleaners",
+    "name": "Caché de Windows Update",
+    "description": "Limpia los instaladores descargados por Windows Update.",
+    "risk": "medium",
+    "presets": ["minimal", "standard", "advanced"],
+    "detect": {
+      "folder": {
+        "path": "%WinDir%\\SoftwareDistribution\\Download"
+      }
+    },
+    "apply": [
+      {
+        "type": "folder_clean",
+        "path": "%WinDir%\\SoftwareDistribution\\Download"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Aquí se guardan las actualizaciones de Windows descargadas antes de instalarse.",
+      "why": "Una vez instaladas, los archivos quedan ahí ocupando varios GB de espacio sin sentido.",
+      "changes": "Se vaciará la carpeta Download de SoftwareDistribution."
+    },
+    "impact": {
+      "type": "diskSpace",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": []
+  },
+  {
+    "id": "cleaner.chrome.cache",
+    "category": "cleaners",
+    "name": "Caché de Google Chrome",
+    "description": "Limpia la caché de navegación de Google Chrome.",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "detect": {
+      "folder": {
+        "path": "%LocalAppData%\\Google\\Chrome\\User Data\\*\\Cache\\*|RECURSE"
+      }
+    },
+    "apply": [
+      {
+        "type": "folder_clean",
+        "path": "%LocalAppData%\\Google\\Chrome\\User Data\\*\\Cache\\*|RECURSE"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Archivos temporales que guarda Chrome para acelerar la carga de sitios web.",
+      "why": "Con el tiempo, la caché puede corromperse o ocupar mucho espacio en disco.",
+      "changes": "Se eliminarán los archivos dentro de las carpetas de caché de todos los perfiles de Chrome."
+    },
+    "impact": {
+      "type": "diskSpace",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": []
+  },
+  {
+    "id": "cleaner.edge.cache",
+    "category": "cleaners",
+    "name": "Caché de Microsoft Edge",
+    "description": "Limpia la caché de navegación de Microsoft Edge.",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "detect": {
+      "folder": {
+        "path": "%LocalAppData%\\Microsoft\\Edge\\User Data\\*\\Cache\\*|RECURSE"
+      }
+    },
+    "apply": [
+      {
+        "type": "folder_clean",
+        "path": "%LocalAppData%\\Microsoft\\Edge\\User Data\\*\\Cache\\*|RECURSE"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Archivos temporales que guarda Edge para acelerar la carga de sitios web.",
+      "why": "Con el tiempo, la caché puede corromperse o ocupar espacio innecesario.",
+      "changes": "Se eliminarán los archivos dentro de las carpetas de caché de todos los perfiles de Edge."
+    },
+    "impact": {
+      "type": "diskSpace",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": []
+  },
+  {
+    "id": "cleaner.firefox.cache",
+    "category": "cleaners",
+    "name": "Caché de Mozilla Firefox",
+    "description": "Limpia la caché de navegación de Firefox.",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "detect": {
+      "folder": {
+        "path": "%LocalAppData%\\Mozilla\\Firefox\\Profiles\\*\\cache2\\*|RECURSE"
+      }
+    },
+    "apply": [
+      {
+        "type": "folder_clean",
+        "path": "%LocalAppData%\\Mozilla\\Firefox\\Profiles\\*\\cache2\\*|RECURSE"
+      }
+    ],
+    "reversible": false,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Archivos temporales descargados por Firefox durante la navegación.",
+      "why": "Limpia archivos obsoletos y recupera espacio en disco.",
+      "changes": "Se vaciará la carpeta 'cache2' de todos los perfiles de Firefox detectados."
+    },
+    "impact": {
+      "type": "diskSpace",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": []
+  }
+]

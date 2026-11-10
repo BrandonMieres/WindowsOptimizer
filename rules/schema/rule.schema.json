@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://windowsoptimizer.dev/schemas/rule.schema.json",
+  "title": "Windows Optimizer Rule",
+  "description": "Esquema para las reglas declarativas de análisis y optimización.",
+  "type": "object",
+  "required": ["id", "name", "category", "risk", "presets", "detect", "apply", "reversible", "explain", "impact"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:\\.[a-z0-9-]+)+$",
+      "description": "Identificador único con formato 'category.slug' (ej: privacy.disable-advertising-id)"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3,
+      "description": "Nombre legible de la regla"
+    },
+    "description": {
+      "type": "string",
+      "description": "Descripción breve opcional"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["privacy", "performance", "network", "startup", "services", "scheduled-tasks", "apps", "cleaners", "gaming", "ui", "system"],
+      "description": "Categoría principal de la regla"
+    },
+    "risk": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "description": "Nivel de riesgo: low (🟢), medium (🟡), high (🔴)"
+    },
+    "presets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["minimal", "standard", "advanced"]
+      },
+      "minItems": 1,
+      "description": "En qué presets se incluye esta regla"
+    },
+    "windows": {
+      "type": "object",
+      "properties": {
+        "min_build": {
+          "type": "integer",
+          "description": "Build mínimo de Windows compatible"
+        },
+        "max_build": {
+          "type": "integer",
+          "description": "Build máximo de Windows compatible (opcional)"
+        },
+        "editions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["Home", "Pro", "Enterprise", "Education", "LTSC"]
+          },
+          "description": "Ediciones de Windows compatibles"
+        }
+      },
+      "description": "Compatibilidad por versión y edición de Windows"
+    },
+    "detect": {
+      "type": "object",
+      "description": "Cómo detectar si la regla aplica",
+      "properties": {
+        "registry": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string" },
+            "name": { "type": "string" },
+            "bad_value": {},
+            "expected_value": {}
+          },
+          "required": ["path", "name"]
+        },
+        "service": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "bad_start_type": { "type": "string", "enum": ["Automatic", "Manual", "Disabled"] }
+          },
+          "required": ["name"]
+        },
+        "scheduled_task": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string" },
+            "expected_state": { "type": "string", "enum": ["Enabled", "Disabled"] },
+            "bad_state": { "type": "string", "enum": ["Enabled", "Disabled"] }
+          },
+          "required": ["path"]
+        },
+        "file_exists": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string" }
+          },
+          "required": ["path"]
+        },
+        "folder": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string" }
+          },
+          "required": ["path"]
+        },
+        "appx": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" }
+          },
+          "required": ["name"]
+        },
+        "power_plan": {
+          "type": "object",
+          "properties": {
+            "expected_schemes": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "apply": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["registry_set", "registry_delete", "service_set", "scheduled_task_set", "scheduled_task", "command", "powershell", "folder_clean", "appx_remove", "power_plan_set"]
+          },
+          "path": { "type": "string" },
+          "name": { "type": "string" },
+          "package_name": { "type": "string" },
+          "target_scheme": { "type": "string" },
+          "value": {},
+          "kind": {
+            "type": "string",
+            "enum": ["DWord", "QWord", "String", "ExpandString", "Binary", "MultiString"]
+          },
+          "start_type": {
+            "type": "string",
+            "enum": ["Automatic", "Manual", "Disabled"]
+          },
+          "state": {
+            "type": "string",
+            "enum": ["Enabled", "Disabled"]
+          },
+          "script": { "type": "string" }
+        }
+      },
+      "minItems": 1,
+      "description": "Acciones a ejecutar para aplicar la regla"
+    },
+    "undo": {
+      "type": "string",
+      "enum": ["auto_from_snapshot", "custom_script", "not_reversible"],
+      "default": "auto_from_snapshot",
+      "description": "Cómo deshacer el cambio"
+    },
+    "undo_script": {
+      "type": "string",
+      "description": "Script de undo cuando undo=custom_script"
+    },
+    "reversible": {
+      "type": "boolean",
+      "description": "Si el cambio se puede deshacer"
+    },
+    "requires_admin": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si requiere privilegios de administrador"
+    },
+    "requires_reboot": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si requiere reiniciar para surtir efecto"
+    },
+    "explain": {
+      "type": "object",
+      "required": ["what", "why", "changes"],
+      "properties": {
+        "what": { "type": "string", "description": "Qué es este ajuste" },
+        "why": { "type": "string", "description": "Por qué importa cambiarlo" },
+        "changes": { "type": "string", "description": "Qué modifica exactamente" }
+      }
+    },
+    "impact": {
+      "type": "object",
+      "required": ["type", "confidence", "show_percentage"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["boot_time", "ram", "disk_space", "latency", "privacy", "none", "performance", "security", "productivity", "storage"],
+          "description": "Tipo de mejora esperada"
+        },
+        "estimator": {
+          "type": "string",
+          "description": "Nombre del estimador que calcula la mejora"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "description": "Nivel de confianza en la estimación"
+        },
+        "show_percentage": {
+          "type": "boolean",
+          "description": "Si se muestra un porcentaje estimado al usuario"
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Fuentes de donde proviene esta regla"
+    }
+  },
+  "additionalProperties": false
+}

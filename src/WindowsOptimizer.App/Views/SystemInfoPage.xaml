@@ -1,0 +1,164 @@
+﻿<Page
+    x:Class="WindowsOptimizer_App.Views.SystemInfoPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid Padding="32">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <TextBlock Text="Sistema" Style="{StaticResource TitleTextBlockStyle}" />
+            <TextBlock Text="Especificaciones de tu equipo" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="0,4,0,0" />
+        </StackPanel>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid ColumnSpacing="48">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="400" MaxWidth="500" />
+                    <ColumnDefinition Width="*" MaxWidth="600" />
+                </Grid.ColumnDefinitions>
+                
+                <!-- Columna Izquierda: Specs -->
+                <StackPanel Grid.Column="0" Spacing="16">
+                <!-- OS -->
+                <Grid Padding="16" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE770;" FontSize="24" Margin="0,0,16,0" VerticalAlignment="Center" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Sistema Operativo" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock Text="{x:Bind ViewModel.OsVersion, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+
+                <!-- CPU -->
+                <Grid Padding="16" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE950;" FontSize="24" Margin="0,0,16,0" VerticalAlignment="Center" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Procesador (CPU)" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock Text="{x:Bind ViewModel.Processor, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+
+                <!-- RAM -->
+                <Grid Padding="16" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE7B8;" FontSize="24" Margin="0,0,16,0" VerticalAlignment="Center" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Memoria RAM" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <TextBlock Text="{x:Bind ViewModel.RamAmount, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Text="&#x2022;" Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
+                            <TextBlock Text="{x:Bind ViewModel.RamSpeed, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+                <!-- GPU -->
+                <Grid Padding="16" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE950;" FontSize="24" Margin="0,0,16,0" VerticalAlignment="Center" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Tarjeta Gráfica (GPU)" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock Text="{x:Bind ViewModel.GraphicsCard, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+
+                <!-- Disks -->
+                <Grid Padding="16" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE7C8;" FontSize="24" Margin="0,0,16,0" VerticalAlignment="Center" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Almacenamiento" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock Text="{x:Bind ViewModel.Disks, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+
+                </StackPanel>
+
+                <!-- Columna Derecha: BIOS Recommendations -->
+                <StackPanel Grid.Column="1" Spacing="16" Margin="0,0,32,0">
+                    <TextBlock Text="Recomendaciones de BIOS" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,0" />
+                    <TextBlock Text="Estos ajustes deben configurarse manualmente en la BIOS de tu placa base. No podemos aplicarlos por ti, pero son vitales para obtener el máximo rendimiento." TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="0,0,0,8" />
+
+                    <!-- XMP -->
+                    <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE7B8;" FontSize="20" Margin="0,0,16,0" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                                <TextBlock Grid.Column="1" Text="Perfil XMP / DOCP (RAM)" VerticalAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                                <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.XmpStatus, Mode=OneWay}" Margin="16,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            </Grid>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="¿Qué es?" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                <TextBlock Text="El Extreme Memory Profile (XMP) o DOCP permite que tu memoria RAM funcione a la velocidad máxima prometida por el fabricante, en lugar de la velocidad base estándar (usualmente 2133 o 2666 MHz). Sin esto, estás perdiendo rendimiento gratis." TextWrapping="Wrap" />
+                                <TextBlock Text="¿Cómo activarlo?" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="0,8,0,0" />
+                                <TextBlock Text="Entra a tu BIOS presionando F2 o Supr al encender el PC. Busca la opción XMP, DOCP o EXPO en la pantalla principal y selecciona el Perfil 1." TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                        </Expander.Content>
+                    </Expander>
+
+                    <!-- Resizable BAR -->
+                    <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE950;" FontSize="20" Margin="0,0,16,0" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                                <TextBlock Grid.Column="1" Text="Resizable BAR / SAM (GPU)" VerticalAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                                <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.ResizableBarStatus, Mode=OneWay}" Margin="16,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            </Grid>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="¿Qué es?" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                <TextBlock Text="Normalmente, el procesador (CPU) solo puede acceder a una pequeña fracción de la memoria de la tarjeta gráfica (VRAM) a la vez. Resizable BAR (o Smart Access Memory) elimina este cuello de botella permitiendo acceso total, lo que aumenta los FPS en juegos hasta un 15%." TextWrapping="Wrap" />
+                                <TextBlock Text="¿Cómo activarlo?" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="0,8,0,0" />
+                                <TextBlock Text="En la BIOS, debes deshabilitar CSM (Compatibility Support Module), activar 'Above 4G Decoding' y luego activar 'Re-Size BAR Support'." TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                        </Expander.Content>
+                    </Expander>
+
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Page>
+
+
+
+

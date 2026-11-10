@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WindowsOptimizer.Core\WindowsOptimizer.Core.csproj" />
+    <ProjectReference Include="..\WindowsOptimizer.Platform\WindowsOptimizer.Platform.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,291 @@
+[
+    {
+        "id":  "gaming.enable-game-mode",
+        "name":  "Activar Modo Juego",
+        "description":  "El Modo Juego optimiza tu PC para jugar, priorizando los recursos del sistema a los juegos.",
+        "category":  "gaming",
+        "risk":  "low",
+        "presets":  [
+                        "minimal",
+                        "standard",
+                        "advanced"
+                    ],
+        "windows":  {
+                        "min_build":  17763,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKCU\\Software\\Microsoft\\GameBar",
+                                        "name":  "AutoGameModeEnabled",
+                                        "expected_value":  1
+                                    }
+                   },
+        "apply":  [
+                      {
+                          "type":  "registry_set",
+                          "path":  "HKCU\\Software\\Microsoft\\GameBar",
+                          "name":  "AutoGameModeEnabled",
+                          "value":  1,
+                          "kind":  "DWord"
+                      }
+                  ],
+        "undo":  "auto_from_snapshot",
+        "reversible":  true,
+        "requires_admin":  false,
+        "requires_reboot":  false,
+        "explain":  {
+                        "what":  "El Modo Juego impide que Windows realice actualizaciones de fondo o notificaciones molestas durante una partida.",
+                        "why":  "Estabiliza los FPS y mejora la experiencia de juego en general.",
+                        "changes":  "Activa AutoGameModeEnabled en GameBar."
+                    },
+        "impact":  {
+                       "type":  "performance",
+                       "estimator":  "none",
+                       "confidence":  "high",
+                       "show_percentage":  false
+                   },
+        "sources":  [
+                        "WinUtil: Game Mode"
+                    ]
+    },
+    {
+        "id":  "gaming.disable-mouse-acceleration",
+        "name":  "Desactivar aceleración del ratón",
+        "description":  "Mejora la precisión del ratón (\u0027Mejorar la precisión del puntero\u0027) para juegos FPS.",
+        "category":  "gaming",
+        "risk":  "low",
+        "presets":  [
+                        "standard",
+                        "advanced"
+                    ],
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKCU\\Control Panel\\Mouse",
+                                        "name":  "MouseSpeed",
+                                        "expected_value":  "0"
+                                    }
+                   },
+        "apply":  [
+                      {
+                          "type":  "registry_set",
+                          "path":  "HKCU\\Control Panel\\Mouse",
+                          "name":  "MouseSpeed",
+                          "value":  "0",
+                          "kind":  "String"
+                      },
+                      {
+                          "type":  "registry_set",
+                          "path":  "HKCU\\Control Panel\\Mouse",
+                          "name":  "MouseThreshold1",
+                          "value":  "0",
+                          "kind":  "String"
+                      },
+                      {
+                          "type":  "registry_set",
+                          "path":  "HKCU\\Control Panel\\Mouse",
+                          "name":  "MouseThreshold2",
+                          "value":  "0",
+                          "kind":  "String"
+                      }
+                  ],
+        "undo":  "auto_from_snapshot",
+        "reversible":  true,
+        "requires_admin":  false,
+        "requires_reboot":  false,
+        "explain":  {
+                        "what":  "La aceleración del ratón hace que el puntero se mueva más lejos cuanto más rápido muevas el ratón.",
+                        "why":  "Desactivarla proporciona un movimiento de 1:1, lo que es esencial para apuntar consistentemente en juegos competitivos.",
+                        "changes":  "Pone MouseSpeed, MouseThreshold1 y MouseThreshold2 a 0."
+                    },
+        "impact":  {
+                       "type":  "productivity",
+                       "estimator":  "none",
+                       "confidence":  "high",
+                       "show_percentage":  false
+                   },
+        "sources":  [
+                        "WinUtil: Mouse Acceleration"
+                    ]
+    },
+    {
+        "id":  "gaming.disable-gamedvr",
+        "category":  "gaming",
+        "impact":  {
+                       "show_percentage":  false,
+                       "estimator":  "none",
+                       "confidence":  "high",
+                       "type":  "performance"
+                   },
+        "apply":  [
+                      {
+                          "path":  "HKCU\\System\\GameConfigStore",
+                          "name":  "GameDVR_Enabled",
+                          "value":  0,
+                          "type":  "registry_set",
+                          "kind":  "DWord"
+                      },
+                      {
+                          "path":  "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR",
+                          "name":  "AllowGameDVR",
+                          "value":  0,
+                          "type":  "registry_set",
+                          "kind":  "DWord"
+                      }
+                  ],
+        "requires_reboot":  false,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKCU\\System\\GameConfigStore",
+                                        "name":  "GameDVR_Enabled",
+                                        "expected_value":  0
+                                    }
+                   },
+        "name":  "Desactivar GameDVR (Barra de juego)",
+        "risk":  "medium",
+        "description":  "Desactiva la grabacin en segundo plano de Xbox Game Bar para liberar recursos.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Modifica claves de registro para deshabilitar GameDVR en Windows.",
+                        "why":  "Consume recursos de CPU y GPU innecesariamente si usas software de tu tarjeta grfica (como ShadowPlay) o no grabas.",
+                        "what":  "GameDVR graba constantemente tu pantalla en segundo plano para poder guardar los ltimos minutos."
+                    },
+        "sources":  [
+                        "WinUtil: Disable GameDVR"
+                    ],
+        "presets":  [
+                        "advanced"
+                    ],
+        "reversible":  true,
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "requires_admin":  true
+    },
+    {
+        "id":  "gaming.disable-fullscreen-optimizations",
+        "category":  "gaming",
+        "impact":  {
+                       "show_percentage":  false,
+                       "estimator":  "none",
+                       "confidence":  "medium",
+                       "type":  "performance"
+                   },
+        "apply":  [
+                      {
+                          "path":  "HKCU\\System\\GameConfigStore",
+                          "name":  "GameDVR_FSEBehaviorMode",
+                          "value":  2,
+                          "type":  "registry_set",
+                          "kind":  "DWord"
+                      }
+                  ],
+        "requires_reboot":  false,
+        "detect":  {
+                       "registry":  {
+                                        "path":  "HKCU\\System\\GameConfigStore",
+                                        "name":  "GameDVR_FSEBehaviorMode",
+                                        "expected_value":  2
+                                    }
+                   },
+        "name":  "Desactivar Optimizaciones de Pantalla Completa",
+        "risk":  "medium",
+        "description":  "Desactiva la capa de visualizacin hbrida para aplicaciones a pantalla completa.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Desactiva el modo FSE globalmente a travs del registro.",
+                        "why":  "En muchos juegos, esta caracterstica aade latencia de entrada (input lag) e inestabilidad de FPS.",
+                        "what":  "Windows superpone una ventana sin bordes sobre los juegos exclusivos en pantalla completa para mejorar el Alt-Tab."
+                    },
+        "sources":  [
+                        "WinUtil: Fullscreen Optimizations"
+                    ],
+        "presets":  [
+                        "advanced"
+                    ],
+        "reversible":  true,
+        "windows":  {
+                        "min_build":  15063,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "requires_admin":  false
+    },
+    {
+        "id": "gaming.powerplan-high-performance",
+        "name": "Activar Plan de Alto o Máximo Rendimiento",
+        "description": "Configura el plan de energía activo en 'Alto rendimiento' o 'Máximo rendimiento' para reducir latencia de CPU y evitar throttling.",
+        "category": "gaming",
+        "risk": "low",
+        "presets": [
+            "standard",
+            "advanced"
+        ],
+        "windows": {
+            "min_build": 10240,
+            "editions": [
+                "Home",
+                "Pro",
+                "Enterprise",
+                "Education"
+            ]
+        },
+        "detect": {
+            "power_plan": {
+                "expected_schemes": [
+                    "HighPerformance",
+                    "UltimatePerformance"
+                ]
+            }
+        },
+        "apply": [
+            {
+                "type": "power_plan_set",
+                "target_scheme": "UltimatePerformance"
+            }
+        ],
+        "undo": "auto_from_snapshot",
+        "reversible": true,
+        "requires_admin": false,
+        "requires_reboot": false,
+        "explain": {
+            "what": "Windows utiliza por defecto el plan 'Equilibrado', reduciendo frecuencias y durmiendo núcleos cuando la carga baja.",
+            "why": "En gaming, los saltos de frecuencia causan micro-tirones (frametime spikes) y aumentan la latencia del procesador.",
+            "changes": "Cambia el plan de energía activo al de Máximo Rendimiento (o Alto Rendimiento)."
+        },
+        "impact": {
+            "type": "performance",
+            "estimator": "none",
+            "confidence": "high",
+            "show_percentage": false
+        },
+        "sources": [
+            "WinUtil: Power Plan",
+            "Microsoft Power Management"
+        ]
+    }
+]

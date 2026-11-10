@@ -1,0 +1,360 @@
+[
+    {
+        "id":  "services.diagtrack",
+        "category":  "privacy",
+        "impact":  {
+                       "show_percentage":  false,
+                       "estimator":  "service_ram",
+                       "confidence":  "high",
+                       "type":  "ram"
+                   },
+        "apply":  [
+                      {
+                          "name":  "DiagTrack",
+                          "start_type":  "Disabled",
+                          "type":  "service"
+                      }
+                  ],
+        "requires_reboot":  false,
+        "detect":  {
+                       "service":  {
+                                       "name":  "DiagTrack",
+                                       "expected_start_type":  "Disabled"
+                                   }
+                   },
+        "name":  "Desactivar Experiencias del usuario y telemetría",
+        "risk":  "low",
+        "description":  "Desactiva el servicio DiagTrack encargado de recolectar y enviar datos de diagnóstico a Microsoft.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia el inicio del servicio DiagTrack a Deshabilitado.",
+                        "why":  "Consume CPU, red y disco enviando datos de uso. Su desactivacin es segura y recomendada.",
+                        "what":  "Es el principal servicio de telemetría de Windows."
+                    },
+        "sources":  [
+                        "WinUtil: Disable Telemetry"
+                    ],
+        "presets":  [
+                        "minimal",
+                        "standard",
+                        "advanced"
+                    ],
+        "reversible":  true,
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "requires_admin":  true
+    },
+    {
+        "id":  "services.mapsbroker",
+        "category":  "services",
+        "impact":  {
+                       "show_percentage":  false,
+                       "estimator":  "service_ram",
+                       "confidence":  "medium",
+                       "type":  "ram"
+                   },
+        "apply":  [
+                      {
+                          "name":  "MapsBroker",
+                          "start_type":  "Manual",
+                          "type":  "service"
+                      }
+                  ],
+        "requires_reboot":  false,
+        "detect":  {
+                       "service":  {
+                                       "name":  "MapsBroker",
+                                       "expected_start_type":  "Manual"
+                                   }
+                   },
+        "name":  "Desactivar Administrador de mapas descargados",
+        "risk":  "low",
+        "description":  "Pone el servicio MapsBroker en manual si no usas mapas sin conexión.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia el inicio del servicio MapsBroker a Manual.",
+                        "why":  "Si no usas la app Mapas de Windows o mapas offline, es innecesario que esté en automático.",
+                        "what":  "Servicio que gestiona los mapas descargados para aplicaciones que usan la API de Bing Maps."
+                    },
+        "sources":  [
+                        "WinUtil: Services - Set to Manual"
+                    ],
+        "presets":  [
+                        "standard",
+                        "advanced"
+                    ],
+        "reversible":  true,
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "requires_admin":  true
+    },
+    {
+        "id":  "services.cscservice",
+        "category":  "services",
+        "impact":  {
+                       "show_percentage":  false,
+                       "estimator":  "service_ram",
+                       "confidence":  "medium",
+                       "type":  "ram"
+                   },
+        "apply":  [
+                      {
+                          "name":  "CscService",
+                          "start_type":  "Disabled",
+                          "type":  "service"
+                      }
+                  ],
+        "requires_reboot":  false,
+        "detect":  {
+                       "service":  {
+                                       "name":  "CscService",
+                                       "expected_start_type":  "Disabled"
+                                   }
+                   },
+        "name":  "Desactivar Archivos sin conexin",
+        "risk":  "low",
+        "description":  "Deshabilita el servicio CscService (Offline Files) til solo en redes corporativas.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia el inicio del servicio CscService a Deshabilitado.",
+                        "why":  "En ordenadores domsticos no se utiliza en absoluto.",
+                        "what":  "Realiza el mantenimiento de la cach de archivos sin conexin de redes empresariales."
+                    },
+        "sources":  [
+                        "WinUtil: Services - Set to Manual"
+                    ],
+        "presets":  [
+                        "standard",
+                        "advanced"
+                    ],
+        "reversible":  true,
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "requires_admin":  true
+    },
+    {
+        "id":  "services.sharedaccess",
+        "category":  "services",
+        "impact":  {
+                       "show_percentage":  false,
+                       "estimator":  "service_ram",
+                       "confidence":  "medium",
+                       "type":  "ram"
+                   },
+        "apply":  [
+                      {
+                          "name":  "SharedAccess",
+                          "start_type":  "Disabled",
+                          "type":  "service"
+                      }
+                  ],
+        "requires_reboot":  false,
+        "detect":  {
+                       "service":  {
+                                       "name":  "SharedAccess",
+                                       "expected_start_type":  "Disabled"
+                                   }
+                   },
+        "name":  "Desactivar Conexin compartida a Internet",
+        "risk":  "medium",
+        "description":  "Desactiva el servicio ICS si no usas tu PC como punto de acceso mvil.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia el inicio del servicio SharedAccess a Deshabilitado.",
+                        "why":  "Si no creas un \u0027Punto de acceso mvil\u0027 desde Windows, no necesitas este servicio.",
+                        "what":  "Proporciona traduccin de direcciones de red (NAT) para compartir tu conexin a internet con otros dispositivos."
+                    },
+        "sources":  [
+                        "WinUtil: Services - Set to Manual"
+                    ],
+        "presets":  [
+                        "advanced"
+                    ],
+        "reversible":  true,
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "requires_admin":  true
+    },
+    {
+        "id":  "services.storsvc",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "ram",
+                       "confidence":  "medium",
+                       "estimator":  "service_ram"
+                   },
+        "requires_reboot":  false,
+        "detect":  {
+                       "service":  {
+                                       "name":  "StorSvc",
+                                       "expected_start_type":  "Manual"
+                                   }
+                   },
+        "category":  "services",
+        "presets":  [
+                        "advanced"
+                    ],
+        "name":  "Servicio de almacenamiento (StorSvc) a Manual",
+        "description":  "Configura el servicio de almacenamiento (Storage Sense) para que solo se inicie manualmente cuando sea necesario.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia el inicio de StorSvc a Manual.",
+                        "what":  "El servicio StorSvc impone directivas de almacenamiento.",
+                        "why":  "Ahorra recursos si no dependes constantemente de Storage Sense para liberar espacio."
+                    },
+        "sources":  [
+                        "WinUtil: Services - Set to Manual"
+                    ],
+        "risk":  "medium",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "name":  "StorSvc",
+                          "start_type":  "Manual",
+                          "type":  "service"
+                      }
+                  ],
+        "requires_admin":  true
+    },
+    {
+        "id":  "services.sysmain",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "ram",
+                       "confidence":  "high",
+                       "estimator":  "service_ram"
+                   },
+        "ssd_only":  true,
+        "requires_reboot":  false,
+        "detect":  {
+                       "service":  {
+                                       "name":  "SysMain",
+                                       "expected_start_type":  "Disabled",
+                                       "media_type":  "ssd"
+                                   }
+                   },
+        "category":  "services",
+        "presets":  [
+                        "advanced"
+                    ],
+        "name":  "Desactivar SysMain (Superfetch) — Solo SSD",
+        "description":  "Desactiva SysMain, que precarga aplicaciones en RAM. Solo recomendado si tienes un SSD o NVMe; en HDD mejora el rendimiento y no debe desactivarse.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Cambia SysMain a Deshabilitado.",
+                        "what":  "Precarga las apps que más usas en la memoria RAM para acelerar su apertura.",
+                        "why":  "En SSDs modernos, el acceso aleatorio es tan rápido que el precacheo no aporta beneficio y genera escrituras innecesarias que reducen la vida útil del disco. En HDD mecánico, en cambio, SysMain es útil y NO debe desactivarse."
+                    },
+        "sources":  [
+                        "WinUtil Issue #5131",
+                        "Microsoft Docs: SysMain service"
+                    ],
+        "risk":  "medium",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "name":  "SysMain",
+                          "start_type":  "Disabled",
+                          "type":  "service"
+                      }
+                  ],
+        "requires_admin":  true
+    },
+    {
+        "id":  "services.wsearch",
+        "windows":  {
+                        "min_build":  10240,
+                        "editions":  [
+                                         "Home",
+                                         "Pro",
+                                         "Enterprise",
+                                         "Education"
+                                     ]
+                    },
+        "impact":  {
+                       "show_percentage":  false,
+                       "type":  "ram",
+                       "confidence":  "medium",
+                       "estimator":  "service_ram"
+                   },
+        "ssd_only":  true,
+        "requires_reboot":  false,
+        "detect":  {
+                       "service":  {
+                                       "name":  "WSearch",
+                                       "expected_start_type":  "Disabled",
+                                       "media_type":  "ssd"
+                                   }
+                   },
+        "category":  "services",
+        "presets":  [
+                        "advanced"
+                    ],
+        "name":  "Desactivar Windows Search (Indexador) — Solo SSD",
+        "description":  "Desactiva el indexador de búsqueda de Windows. Solo recomendado en SSD; en HDD puede ralentizar las búsquedas significativamente.",
+        "undo":  "auto_from_snapshot",
+        "explain":  {
+                        "changes":  "Deshabilita WSearch.",
+                        "what":  "Indexa archivos del disco para que las búsquedas nativas del menú inicio sean instantáneas.",
+                        "why":  "El indexador genera mucho tráfico de E/S en segundo plano. En SSD este impacto es menor, pero en HDD mecánico las búsquedas sin índice serían muy lentas — se recomienda mantenerlo activo en HDD."
+                    },
+        "sources":  [
+                        "WinUtil Issue #5131"
+                    ],
+        "risk":  "high",
+        "reversible":  true,
+        "apply":  [
+                      {
+                          "name":  "WSearch",
+                          "start_type":  "Disabled",
+                          "type":  "service"
+                      }
+                  ],
+        "requires_admin":  true
+    }
+]

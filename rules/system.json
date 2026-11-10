@@ -1,0 +1,412 @@
+[
+  {
+    "id": "system.disable-hibernation",
+    "name": "Desactivar Hibernación",
+    "description": "Desactiva la hibernación del sistema para recuperar espacio en disco.",
+    "category": "system",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\System\\CurrentControlSet\\Control\\Power",
+        "name": "HibernateEnabled",
+        "expected_value": 0
+      }
+    },
+    "apply": [
+      {
+        "type": "command",
+        "command": "powercfg",
+        "arguments": "-h off",
+        "undo": "powercfg -h on"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "La hibernación guarda el estado actual de la memoria en el disco duro (archivo hiberfil.sys) para un inicio más rápido.",
+      "why": "Si usas un SSD, el inicio ya es muy rápido y desactivar la hibernación libera una cantidad de almacenamiento igual a tu memoria RAM (ej. 8 a 32 GB).",
+      "changes": "Ejecuta 'powercfg -h off' para desactivar la hibernación y eliminar el archivo hiberfil.sys inmediatamente."
+    },
+    "impact": {
+      "type": "storage",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil: Hibernation - Disable"]
+  },
+  {
+    "id": "system.enable-end-task-right-click",
+    "name": "Habilitar finalizar tarea con clic derecho (Win 11)",
+    "description": "Añade la opción 'Finalizar tarea' al hacer clic derecho en un icono de la barra de tareas.",
+    "category": "system",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "windows": {
+      "min_build": 22621,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "name": "TaskbarEndTask",
+        "expected_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "name": "TaskbarEndTask",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows 11 incluye una función oculta para matar aplicaciones colgadas directamente desde la barra de tareas.",
+      "why": "Es mucho más rápido que abrir el Administrador de Tareas cuando un programa se congela.",
+      "changes": "Habilita TaskbarEndTask en el Explorador."
+    },
+    "impact": {
+      "type": "productivity",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil: End Task With Right Click - Enable"]
+  },
+  {
+    "id": "system.disable-wpbt",
+    "name": "Desactivar inyección de bloatware de BIOS (WPBT)",
+    "description": "Evita que los fabricantes (OEM) instalen automáticamente su propio software (bloatware) al iniciar Windows.",
+    "category": "system",
+    "risk": "medium",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager",
+        "name": "DisableWpbtExecution",
+        "expected_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager",
+        "name": "DisableWpbtExecution",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": true,
+    "explain": {
+      "what": "La Windows Platform Binary Table (WPBT) es una característica de la placa base que inyecta software del fabricante durante el arranque (como software de Lenovo, Dell, Asus).",
+      "why": "Desactivarla evita la reinstalación automática de programas no deseados e incrementa la seguridad (se ha usado para malware en el pasado).",
+      "changes": "Añade DisableWpbtExecution = 1 al administrador de sesiones."
+    },
+    "impact": {
+      "type": "security",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil: Windows Platform Binary Table (WPBT) - Disable"]
+  },
+  {
+    "id": "system.disable-consumer-features",
+    "name": "Desactivar aplicaciones de terceros automáticas",
+    "description": "Evita que Windows descargue e instale aplicaciones de terceros sugeridas como Candy Crush, Spotify, etc.",
+    "category": "system",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+        "name": "DisableWindowsConsumerFeatures",
+        "expected_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+        "name": "DisableWindowsConsumerFeatures",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows instala 'experiencias de consumidor' (juegos y apps patrocinadas) automáticamente en instalaciones nuevas.",
+      "why": "Mantiene el menú de inicio limpio y evita descargas innecesarias.",
+      "changes": "Aplica DisableWindowsConsumerFeatures en las políticas del sistema."
+    },
+    "impact": {
+      "type": "productivity",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil: ConsumerFeatures - Disable"]
+  },
+  {
+    "id": "system.enable-long-paths",
+    "name": "Habilitar rutas largas (Long Paths)",
+    "description": "Permite crear y acceder a rutas de archivos con más de 260 caracteres.",
+    "category": "system",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "windows": {
+      "min_build": 14393,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+        "name": "LongPathsEnabled",
+        "expected_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+        "name": "LongPathsEnabled",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": true,
+    "explain": {
+      "what": "Históricamente, Windows ha estado limitado a rutas de archivos (MAX_PATH) de 260 caracteres.",
+      "why": "Activar esta opción evita errores en desarrollo de software, copias de seguridad y Node.js.",
+      "changes": "Cambia LongPathsEnabled a 1 en el registro de FileSystem."
+    },
+    "impact": {
+      "type": "productivity",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil: Enable Long Paths"]
+  },
+  {
+    "id": "system.bsod-verbose-mode",
+    "name": "Modo Detallado de Pantallazo Azul (BSoD)",
+    "description": "Muestra información técnica detallada en lugar de la cara triste cuando Windows se bloquea.",
+    "category": "system",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\System\\CurrentControlSet\\Control\\CrashControl",
+        "name": "DisplayParameters",
+        "expected_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\System\\CurrentControlSet\\Control\\CrashControl",
+        "name": "DisplayParameters",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Los pantallazos azules modernos ocultan los códigos hexadecimales del fallo.",
+      "why": "Mostrar los códigos técnicos es vital para diagnosticar qué hardware o driver causó el problema.",
+      "changes": "Habilita DisplayParameters en CrashControl."
+    },
+    "impact": {
+      "type": "productivity",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil: BSoD Verbose Mode"]
+  },
+  {
+    "id": "system.disable-delivery-optimization-p2p",
+    "name": "Desactivar Optimización de Entrega P2P",
+    "description": "Impide que Windows use tu ancho de banda para subir y compartir actualizaciones con otros equipos vía red local o internet.",
+    "category": "system",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization",
+        "name": "DODownloadMode",
+        "expected_value": 0
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization",
+        "name": "DODownloadMode",
+        "value": 0,
+        "kind": "DWord"
+      },
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Config",
+        "name": "DODownloadMode",
+        "value": 0,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "La Optimización de Entrega de Windows (DoSvc) convierte tu ordenador en un nodo P2P que envía fragmentos de actualización a otros ordenadores.",
+      "why": "Satura la subida de tu conexión a Internet, causa micro-cortes o ping alto en juegos y consume recursos de red en segundo plano.",
+      "changes": "Establece DODownloadMode a 0 (solo descarga HTTP directa oficial desde servidores de Microsoft, sin subidas P2P)."
+    },
+    "impact": {
+      "type": "latency",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil: Delivery Optimization - Disable P2P", "Microsoft Learn: Delivery Optimization"]
+  },
+  {
+    "id": "system.disable-auto-restart-updates",
+    "name": "Evitar reinicios automáticos de Windows Update",
+    "description": "Impide que Windows reinicie forzosamente el equipo para instalar actualizaciones mientras haya usuarios con sesión iniciada.",
+    "category": "system",
+    "risk": "low",
+    "presets": ["minimal", "standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+        "name": "NoAutoRebootWithLoggedOnUsers",
+        "expected_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+        "name": "NoAutoRebootWithLoggedOnUsers",
+        "value": 1,
+        "kind": "DWord"
+      },
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+        "name": "AlwaysAutoRebootAtScheduledTime",
+        "value": 0,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows Update suele reiniciar automáticamente el equipo tras instalar parches, cerrando aplicaciones de trabajo o juegos.",
+      "why": "Evita la pérdida repentina de tareas no guardadas, pestañas o programas en ejecución por reinicios intempestivos.",
+      "changes": "Habilita NoAutoRebootWithLoggedOnUsers en las directivas de Windows Update."
+    },
+    "impact": {
+      "type": "none",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil: Windows Update No Auto Reboot", "Microsoft Learn: Configure Automatic Updates"]
+  },
+  {
+    "id": "system.disable-windows-update-driver-search",
+    "name": "Evitar que Windows Update reemplace controladores",
+    "description": "Impide que Windows Update sobreescriba controladores oficiales de tarjeta gráfica (Nvidia, AMD) o audio.",
+    "category": "system",
+    "risk": "low",
+    "presets": ["standard", "advanced"],
+    "windows": {
+      "min_build": 10240,
+      "editions": ["Home", "Pro", "Enterprise", "Education"]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+        "name": "ExcludeWUDriversInQualityUpdate",
+        "expected_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+        "name": "ExcludeWUDriversInQualityUpdate",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows Update busca automáticamente controladores genéricos para el hardware instalado.",
+      "why": "Frecuentemente sobreescribe drivers gráficos optimizados de Nvidia o AMD, causando errores, pérdida de funciones o caídas de FPS.",
+      "changes": "Activa ExcludeWUDriversInQualityUpdate en las directivas de Windows Update."
+    },
+    "impact": {
+      "type": "none",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": ["WinUtil: Exclude Drivers from Windows Update", "Microsoft Learn: Quality Updates"]
+  }
+]
+

@@ -1,0 +1,229 @@
+[
+  {
+    "id": "ui.show-file-extensions",
+    "name": "Mostrar extensiones de archivos",
+    "description": "Obliga al Explorador de Archivos a mostrar la extensión de todos los archivos conocidos.",
+    "category": "ui",
+    "risk": "low",
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "name": "HideFileExt",
+        "expected_value": 0
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "name": "HideFileExt",
+        "value": 0,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows oculta por defecto las extensiones de los archivos (.exe, .txt, .jpg).",
+      "why": "Ver la extensión real previene la ejecución de malware camuflado (por ejemplo, 'documento.pdf.exe').",
+      "changes": "Cambia HideFileExt a 0 en HKCU."
+    },
+    "impact": {
+      "type": "security",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": [
+      "WinUtil: File Explorer File Extensions"
+    ]
+  },
+  {
+    "id": "ui.show-hidden-files",
+    "name": "Mostrar archivos y carpetas ocultos",
+    "description": "El Explorador de Archivos mostrará los archivos marcados como ocultos por el sistema.",
+    "category": "ui",
+    "risk": "low",
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "name": "Hidden",
+        "expected_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "name": "Hidden",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows oculta ciertos archivos para que el usuario no los elimine por error.",
+      "why": "Útil para desarrolladores y administradores que necesitan acceso a archivos como .git o carpetas AppData.",
+      "changes": "Cambia Hidden a 1 en HKCU."
+    },
+    "impact": {
+      "type": "productivity",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": [
+      "WinUtil: File Explorer Hidden Files"
+    ]
+  },
+  {
+    "id": "ui.dark-theme",
+    "name": "Forzar Tema Oscuro en Windows y Apps",
+    "description": "Establece el tema oscuro por defecto para el sistema y las aplicaciones.",
+    "category": "ui",
+    "risk": "low",
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+        "name": "AppsUseLightTheme",
+        "expected_value": 0
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+        "name": "AppsUseLightTheme",
+        "value": 0,
+        "kind": "DWord"
+      },
+      {
+        "type": "registry_set",
+        "path": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+        "name": "SystemUsesLightTheme",
+        "value": 0,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": false,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Windows permite elegir entre temas claros u oscuros para las ventanas del sistema y aplicaciones UWP.",
+      "why": "El tema oscuro reduce la fatiga visual y puede consumir menos energía en pantallas OLED.",
+      "changes": "Cambia AppsUseLightTheme y SystemUsesLightTheme a 0 en HKCU."
+    },
+    "impact": {
+      "type": "productivity",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": [
+      "WinUtil: Dark Theme for Windows"
+    ]
+  },
+  {
+    "id": "ui.disable-start-bing-search",
+    "name": "Desactivar búsqueda web de Bing en el menú Inicio",
+    "description": "Impide que el menú inicio realice búsquedas en internet con Bing.",
+    "category": "ui",
+    "risk": "low",
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "detect": {
+      "registry": {
+        "path": "HKCU\\Software\\Policies\\Microsoft\\Windows\\Explorer",
+        "name": "DisableSearchBoxSuggestions",
+        "expected_value": 1
+      }
+    },
+    "apply": [
+      {
+        "type": "registry_set",
+        "path": "HKCU\\Software\\Policies\\Microsoft\\Windows\\Explorer",
+        "name": "DisableSearchBoxSuggestions",
+        "value": 1,
+        "kind": "DWord"
+      }
+    ],
+    "undo": "auto_from_snapshot",
+    "reversible": true,
+    "requires_admin": true,
+    "requires_reboot": false,
+    "explain": {
+      "what": "Al buscar en el Menú Inicio, Windows envía la consulta a Bing y muestra resultados web mixtos.",
+      "why": "Esto ralentiza el menú, consume ancho de banda y mezcla archivos locales con webs.",
+      "changes": "Habilita DisableSearchBoxSuggestions en Explorer Policies."
+    },
+    "impact": {
+      "type": "performance",
+      "estimator": "none",
+      "confidence": "high",
+      "show_percentage": false
+    },
+    "sources": [
+      "WinUtil: Start Menu Bing Search"
+    ]
+  }
+]

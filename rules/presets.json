@@ -1,0 +1,20 @@
+{
+  "$schema": "./schema/rule.schema.json",
+  "presets": {
+    "minimal": {
+      "name": "Mínimo",
+      "description": "Solo cambios seguros para todos: telemetría básica y contenido sugerido.",
+      "risk_max": "low"
+    },
+    "standard": {
+      "name": "Estándar",
+      "description": "Recomendado para la mayoría. Incluye servicios y ajustes de privacidad.",
+      "risk_max": "medium"
+    },
+    "advanced": {
+      "name": "Avanzado",
+      "description": "Para usuarios expertos. Incluye todos los cambios, con aviso en los de riesgo alto.",
+      "risk_max": "high"
+    }
+  }
+}

@@ -1,0 +1,522 @@
+[
+  {
+    "id": "tasks.autochk.proxy",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "\\Microsoft\\Windows\\Autochk\\Proxy",
+        "type": "scheduled_task",
+        "state": "Disabled"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "scheduled_task": {
+        "path": "\\Microsoft\\Windows\\Autochk\\Proxy",
+        "expected_state": "Disabled"
+      }
+    },
+    "name": "Desactivar telemetría de verificación de disco (Autochk Proxy)",
+    "risk": "low",
+    "description": "Evita que los informes de comprobación de integridad y estado de discos se transmitan a los servidores de telemetría de Microsoft.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Es una tarea programada que procesa los resultados de Autochk (chkdsk en arranque) para enviar estadísticas a Microsoft.",
+      "why": "El análisis local de errores de disco sigue funcionando con normalidad sin necesidad de compartir informes con Microsoft.",
+      "changes": "Deshabilita la tarea '\\Microsoft\\Windows\\Autochk\\Proxy' en el Programador de Tareas."
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry"
+    ],
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": true
+  },
+  {
+    "id": "tasks.customer experience improvement program.consolidator",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "\\Microsoft\\Windows\\Customer Experience Improvement Program\\Consolidator",
+        "type": "scheduled_task",
+        "state": "Disabled"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "scheduled_task": {
+        "path": "\\Microsoft\\Windows\\Customer Experience Improvement Program\\Consolidator",
+        "expected_state": "Disabled"
+      }
+    },
+    "name": "Desactivar recolección de uso CEIP Consolidator",
+    "risk": "low",
+    "description": "Detiene la consolidación y envío diario a Microsoft de datos sobre cómo utilizas el sistema y tus aplicaciones.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "CEIP Consolidator es la tarea central del Programa de Mejora de la Experiencia del Usuario (telemetría de uso diario).",
+      "why": "Es uno de los rastreadores más activos de Windows; desactivarlo reduce el uso de CPU en reposo y protege tu privacidad.",
+      "changes": "Deshabilita la tarea '\\Microsoft\\Windows\\Customer Experience Improvement Program\\Consolidator' en el Programador de Tareas."
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry"
+    ],
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": true
+  },
+  {
+    "id": "tasks.customer experience improvement program.usbceip",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "\\Microsoft\\Windows\\Customer Experience Improvement Program\\UsbCeip",
+        "type": "scheduled_task",
+        "state": "Disabled"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "scheduled_task": {
+        "path": "\\Microsoft\\Windows\\Customer Experience Improvement Program\\UsbCeip",
+        "expected_state": "Disabled"
+      }
+    },
+    "name": "Desactivar telemetría de periféricos USB (UsbCeip)",
+    "risk": "low",
+    "description": "Detiene la recolección periódica y transmisión de estadísticas sobre las memorias y dispositivos USB que conectas a tu equipo.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "UsbCeip recopila datos de telemetría de hardware (fabricante, modelo, frecuencia de conexión) sobre los periféricos USB usados.",
+      "why": "No aporta ninguna ventaja al funcionamiento del equipo ni a los dispositivos USB; solo recopila datos de inventario.",
+      "changes": "Deshabilita la tarea '\\Microsoft\\Windows\\Customer Experience Improvement Program\\UsbCeip' en el Programador de Tareas."
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry"
+    ],
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": true
+  },
+  {
+    "id": "tasks.diskdiagnostic.microsoft-windows-diskdiagnosticdatacollector",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "\\Microsoft\\Windows\\DiskDiagnostic\\Microsoft-Windows-DiskDiagnosticDataCollector",
+        "type": "scheduled_task",
+        "state": "Disabled"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "scheduled_task": {
+        "path": "\\Microsoft\\Windows\\DiskDiagnostic\\Microsoft-Windows-DiskDiagnosticDataCollector",
+        "expected_state": "Disabled"
+      }
+    },
+    "name": "Desactivar recopilador de diagnóstico de disco (DiskDiagnosticCollector)",
+    "risk": "low",
+    "description": "Evita que Windows envíe diagnósticos periódicos y métricas de rendimiento de tus unidades de almacenamiento a Microsoft.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Recopila periódicamente datos sobre fallos predictivos y métricas de lectura/escritura de los discos para enviarlos a la nube.",
+      "why": "Las herramientas locales de salud de disco (SMART, CrystalDiskInfo) funcionan con total normalidad sin esta tarea activa.",
+      "changes": "Deshabilita la tarea '\\Microsoft\\Windows\\DiskDiagnostic\\Microsoft-Windows-DiskDiagnosticDataCollector' en el Programador de Tareas."
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry"
+    ],
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": true
+  },
+  {
+    "id": "tasks.feedback.siuf.dmclient",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "\\Microsoft\\Windows\\Feedback\\Siuf\\DmClient",
+        "type": "scheduled_task",
+        "state": "Disabled"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "scheduled_task": {
+        "path": "\\Microsoft\\Windows\\Feedback\\Siuf\\DmClient",
+        "expected_state": "Disabled"
+      }
+    },
+    "name": "Desactivar telemetría de opiniones y encuestas (SIUF DmClient)",
+    "risk": "low",
+    "description": "Desactiva el motor de encuestas de Windows que monitoriza eventos del sistema para mostrar solicitudes de opinión y enviar diagnósticos.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "DmClient (Device Management Client) forma parte de SIUF; recopila eventos de interacción para determinar cuándo solicitar opiniones.",
+      "why": "Elimina ventanas emergentes de encuestas, reduce el consumo de red en segundo plano y evita el seguimiento continuo.",
+      "changes": "Deshabilita la tarea '\\Microsoft\\Windows\\Feedback\\Siuf\\DmClient' en el Programador de Tareas."
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry"
+    ],
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": true
+  },
+  {
+    "id": "tasks.feedback.siuf.dmclientonscenariodownload",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "\\Microsoft\\Windows\\Feedback\\Siuf\\DmClientOnScenarioDownload",
+        "type": "scheduled_task",
+        "state": "Disabled"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "scheduled_task": {
+        "path": "\\Microsoft\\Windows\\Feedback\\Siuf\\DmClientOnScenarioDownload",
+        "expected_state": "Disabled"
+      }
+    },
+    "name": "Desactivar descarga de reglas de telemetría SIUF",
+    "risk": "low",
+    "description": "Impide que Windows descargue dinámicamente nuevas reglas de seguimiento y disparadores de telemetría desde los servidores de Microsoft.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Se conecta a los servidores de Microsoft para descargar nuevos escenarios de telemetría y reglas de recolección de datos.",
+      "why": "Evita que Microsoft active nuevos parámetros de recopilación de telemetría de forma remota sin previo aviso.",
+      "changes": "Deshabilita la tarea '\\Microsoft\\Windows\\Feedback\\Siuf\\DmClientOnScenarioDownload' en el Programador de Tareas."
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry"
+    ],
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": true
+  },
+  {
+    "id": "tasks.windows error reporting.queuereporting",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "\\Microsoft\\Windows\\Windows Error Reporting\\QueueReporting",
+        "type": "scheduled_task",
+        "state": "Disabled"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "scheduled_task": {
+        "path": "\\Microsoft\\Windows\\Windows Error Reporting\\QueueReporting",
+        "expected_state": "Disabled"
+      }
+    },
+    "name": "Desactivar cola de informes de errores (WER QueueReporting)",
+    "risk": "low",
+    "description": "Detiene el procesamiento y envío automático a Microsoft de registros de fallos, volcados de memoria e informes de error de aplicaciones.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Windows Error Reporting (WER) QueueReporting procesa la cola de fallos de aplicaciones colgadas para enviarlos a Microsoft.",
+      "why": "Los volcados de memoria (dumps) pueden incluir datos confidenciales de la memoria RAM y su procesamiento consume disco y ancho de banda.",
+      "changes": "Deshabilita la tarea '\\Microsoft\\Windows\\Windows Error Reporting\\QueueReporting' en el Programador de Tareas."
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry"
+    ],
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": true
+  },
+  {
+    "id": "tasks.application experience.marebackup",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "\\Microsoft\\Windows\\Application Experience\\MareBackup",
+        "type": "scheduled_task",
+        "state": "Disabled"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "scheduled_task": {
+        "path": "\\Microsoft\\Windows\\Application Experience\\MareBackup",
+        "expected_state": "Disabled"
+      }
+    },
+    "name": "Desactivar copia de seguridad de telemetría (MareBackup)",
+    "risk": "low",
+    "description": "Desactiva la tarea de respaldo del motor de compatibilidad y telemetría de aplicaciones de Microsoft.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "MareBackup realiza copias de seguridad de las bases de datos locales de telemetría de compatibilidad del sistema.",
+      "why": "Es redundante e innecesario cuando la telemetría principal está deshabilitada; ahorra escrituras innecesarias en el SSD.",
+      "changes": "Deshabilita la tarea '\\Microsoft\\Windows\\Application Experience\\MareBackup' en el Programador de Tareas."
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry"
+    ],
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": true
+  },
+  {
+    "id": "tasks.application experience.startupapptask",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "\\Microsoft\\Windows\\Application Experience\\StartupAppTask",
+        "type": "scheduled_task",
+        "state": "Disabled"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "scheduled_task": {
+        "path": "\\Microsoft\\Windows\\Application Experience\\StartupAppTask",
+        "expected_state": "Disabled"
+      }
+    },
+    "name": "Desactivar telemetría de programas de inicio (StartupAppTask)",
+    "risk": "low",
+    "description": "Evita que Windows analice y envíe a Microsoft el impacto y la lista de aplicaciones que tienes configuradas para arrancar con el equipo.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "StartupAppTask rastrea el tiempo de arranque y los ejecutables configurados al inicio de Windows para informar a Microsoft.",
+      "why": "Mejora los tiempos de arranque y protege la lista de programas instalados en tu ordenador.",
+      "changes": "Deshabilita la tarea '\\Microsoft\\Windows\\Application Experience\\StartupAppTask' en el Programador de Tareas."
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry"
+    ],
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": true
+  },
+  {
+    "id": "tasks.application experience.pcapatchdbtask",
+    "category": "privacy",
+    "impact": {
+      "show_percentage": false,
+      "estimator": "none",
+      "confidence": "high",
+      "type": "privacy"
+    },
+    "apply": [
+      {
+        "path": "\\Microsoft\\Windows\\Application Experience\\PcaPatchDbTask",
+        "type": "scheduled_task",
+        "state": "Disabled"
+      }
+    ],
+    "requires_reboot": false,
+    "detect": {
+      "scheduled_task": {
+        "path": "\\Microsoft\\Windows\\Application Experience\\PcaPatchDbTask",
+        "expected_state": "Disabled"
+      }
+    },
+    "name": "Desactivar actualización de telemetría PCA (PcaPatchDbTask)",
+    "risk": "low",
+    "description": "Desactiva la tarea que actualiza la base de datos de rastreo del Asistente de Compatibilidad de Programas.",
+    "undo": "auto_from_snapshot",
+    "explain": {
+      "what": "Actualiza la base de datos de telemetría utilizada por el Program Compatibility Assistant (PCA) para monitorizar fallos.",
+      "why": "Evita conexiones periódicas de red en segundo plano y análisis de compatibilidad innecesarios.",
+      "changes": "Deshabilita la tarea '\\Microsoft\\Windows\\Application Experience\\PcaPatchDbTask' en el Programador de Tareas."
+    },
+    "sources": [
+      "WinUtil: Disable Telemetry"
+    ],
+    "presets": [
+      "minimal",
+      "standard",
+      "advanced"
+    ],
+    "reversible": true,
+    "windows": {
+      "min_build": 10240,
+      "editions": [
+        "Home",
+        "Pro",
+        "Enterprise",
+        "Education"
+      ]
+    },
+    "requires_admin": true
+  }
+]
